@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:book/utils/asset_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../home/home_screen.dart';
 
@@ -30,12 +33,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     // Start the animation
     _controller.forward();
-    Future.delayed(Duration(seconds: 4), () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePageScreen(),
-          ));
+    Future.delayed(Duration(seconds: 3), () {
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => HomePageScreen(),
+      //     ));
+      log("Navigating to /root");
+      context.go("/register");
     });
   }
 

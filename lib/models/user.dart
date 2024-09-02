@@ -3,7 +3,7 @@ class User {
   String userName;
   String destination;
   String ratingAndReview;
-  String vehicle;
+  List<String> services;
   String userPrice;
 
   User({
@@ -11,7 +11,7 @@ class User {
     required this.userName,
     required this.destination,
     required this.ratingAndReview,
-    required this.vehicle,
+    required this.services,
     required this.userPrice,
   });
 }
