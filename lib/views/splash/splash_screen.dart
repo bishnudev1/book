@@ -14,25 +14,25 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  // late AnimationController _controller;
+  // late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     // Initialize the animation controller
-    _controller = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
+    // _controller = AnimationController(
+    //   duration: const Duration(seconds: 2),
+    //   vsync: this,
+    // );
 
     // Create a tween animation from 0.0 (transparent) to 1.0 (opaque)
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    );
+    // _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    //   CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    // );
 
     // Start the animation
-    _controller.forward();
+    // _controller.forward();
     Future.delayed(Duration(seconds: 3), () {
       // Navigator.push(
       //     context,
@@ -40,14 +40,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       //       builder: (context) => HomePageScreen(),
       //     ));
       log("Navigating to /root");
-      context.go("/register");
+      context.go("/root");
     });
   }
 
   @override
   void dispose() {
     // Dispose the controller when done
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 
@@ -55,28 +55,25 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: FadeTransition(
-        opacity: _animation,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                AssetManager.splashImage,
-                color: Colors.black,
-                height: 120,
+      body: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Image.asset(
+            //   AssetManager.splashImage,
+            //   color: Colors.black,
+            //   height: 120,
+            // ),
+            // SizedBox(height: 10),
+            const Text(
+              'Cihu',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(height: 10),
-              const Text(
-                'Book',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

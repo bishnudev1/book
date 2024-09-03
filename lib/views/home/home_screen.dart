@@ -19,35 +19,47 @@ class _HomePageScreenState extends State<HomePageScreen> {
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       userName: 'Deepak Kumar',
       destination: '5 miles away',
-      ratingAndReview: '4.7, (12)',
-      services: ['Car', 'Gym', 'Luggage'],
+      ratingStars: 4,
+      services: [
+        Icons.car_rental_rounded,
+        Icons.sports_gymnastics_rounded,
+      ],
       userPrice: '\$12 per Hour',
     ),
     User(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       userName: 'Deepak Kumar',
       destination: '5 miles away',
-      ratingAndReview: '4.7, (12)',
-      services: ['Car', 'Gym', 'Cooking'],
+      ratingStars: 3,
+      services: [Icons.car_rental_rounded, Icons.sports_gymnastics_rounded, Icons.cookie_outlined],
       userPrice: '\$12 per Hour',
     ),
     User(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       userName: 'Deepak Kumar',
       destination: '5 miles away',
-      ratingAndReview: '4.7, (12)',
-      services: ['Luggage'],
+      ratingStars: 5,
+      services: [Icons.luggage_rounded],
       userPrice: '\$12 per Hour',
     ),
     User(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       userName: 'Deepak Kumar',
       destination: '5 miles away',
-      ratingAndReview: '4.7, (12)',
-      services: ['Gym', 'Car'],
+      ratingStars: 4,
+      services: [Icons.sports_gymnastics_rounded],
       userPrice: '\$12 per Hour',
     ),
     // Additional users...
+  ];
+
+  // List of all available services
+  final List<IconData> allServices = [
+    Icons.car_rental_rounded,
+    Icons.sports_gymnastics_rounded,
+    Icons.cookie_outlined,
+    Icons.luggage_rounded,
+    // Add other service icons here...
   ];
 
   @override
@@ -60,7 +72,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Getting device width and height
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double padding = deviceWidth * 0.06; // Dynamic padding
@@ -70,6 +81,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         statusBarColor: Colors.transparent,
       ),
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: padding),
           child: Column(
@@ -120,7 +132,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                      icon: const Icon(Icons.search, color: Colors.white),
+                      icon: const Icon(Icons.filter_list_alt, color: Colors.white),
                       onPressed: () {
                         // TODO: Add filter functionality
                       },
@@ -146,87 +158,76 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 4,
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
                             blurRadius: 6,
                             offset: const Offset(0, 3),
                           ),
                         ],
                       ),
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              // userList[index].profilePhoto,
-                              AssetManager.dummyPersonDP,
-                              height: deviceHeight * 0.15,
-                              width: deviceWidth * 0.25,
-                              fit: BoxFit.cover,
+                          Row(
+                            children: [
+                              ClipOval(
+                                child: Image.asset(
+                                  // userList[index].profilePhoto,
+                                  AssetManager.dummyPersonDP,
+                                  height: deviceHeight * 0.15,
+                                  width: deviceHeight * 0.15, // Circular image
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              SizedBox(width: deviceWidth * 0.04),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    userList[index].userName,
+                                    style: GoogleFonts.roboto(
+                                      fontSize: deviceWidth * 0.045,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  SizedBox(height: deviceHeight * 0.005),
+                                  _buildStarRating(userList[index].ratingStars),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: deviceHeight * 0.015),
+
+                          // Services Logos
+                          Wrap(
+                            spacing: 8,
+                            children: allServices.map((service) {
+                              if (userList[index].services.contains(service)) {
+                                return _buildServiceTag(service);
+                              } else {
+                                return _buildExcludedServiceTag(service);
+                              }
+                            }).toList(),
+                          ),
+
+                          SizedBox(height: deviceHeight * 0.015),
+
+                          // Additional information
+                          Text(
+                            "A short description or additional information about the user or the services they provide.",
+                            style: GoogleFonts.lato(
+                              fontSize: deviceWidth * 0.035,
+                              color: Colors.black54,
                             ),
                           ),
-                          SizedBox(width: deviceWidth * 0.04),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  userList[index].userName,
-                                  style: GoogleFonts.roboto(
-                                    fontSize: deviceWidth * 0.045,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                SizedBox(height: deviceHeight * 0.01),
-                                Row(
-                                  children: [
-                                    const Icon(Icons.location_on, color: Colors.redAccent),
-                                    SizedBox(width: deviceWidth * 0.01),
-                                    Text(
-                                      userList[index].destination,
-                                      style: GoogleFonts.lato(
-                                        fontSize: deviceWidth * 0.035,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: deviceHeight * 0.01),
-                                Row(
-                                  children: [
-                                    const Icon(Icons.star, color: Colors.amber),
-                                    SizedBox(width: deviceWidth * 0.01),
-                                    Text(
-                                      userList[index].ratingAndReview,
-                                      style: GoogleFonts.lora(
-                                        fontSize: deviceWidth * 0.035,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: deviceHeight * 0.01),
-
-                                // Service Tags
-                                Wrap(
-                                  spacing: deviceWidth * 0.02,
-                                  children: [
-                                    for (var service in ['Cooking', 'Gym', 'Car', 'Luggage'])
-                                      _buildServiceTag(service, userList[index].services),
-                                  ],
-                                ),
-
-                                SizedBox(height: deviceHeight * 0.015),
-                                Text(
-                                  userList[index].userPrice,
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.green,
-                                    fontSize: deviceWidth * 0.04,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                          SizedBox(height: deviceHeight * 0.015),
+                          Text(
+                            userList[index].userPrice,
+                            style: GoogleFonts.poppins(
+                              color: Colors.green,
+                              fontSize: deviceWidth * 0.04,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -242,20 +243,44 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget _buildServiceTag(String service, List<String> providedServices) {
-    bool isServiceProvided = providedServices.contains(service);
-    return Chip(
-      label: Text(
-        service,
-        style: TextStyle(
-          color: isServiceProvided ? Colors.white : Colors.black54,
-        ),
-      ),
-      avatar: Icon(
-        isServiceProvided ? Icons.check : Icons.close,
-        color: Colors.white,
-      ),
-      backgroundColor: isServiceProvided ? Colors.green : Colors.grey.shade400,
+  Widget _buildServiceTag(IconData serviceIcon) {
+    return Icon(
+      serviceIcon,
+      color: Colors.blueAccent,
+      size: 28,
     );
+  }
+
+  Widget _buildExcludedServiceTag(IconData serviceIcon) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Icon(
+          serviceIcon,
+          color: Colors.grey,
+          size: 28,
+        ),
+        Positioned(
+          child: Icon(
+            Icons.clear,
+            color: Colors.redAccent,
+            size: 18,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStarRating(int rating) {
+    List<Widget> stars = [];
+    for (int i = 1; i <= 5; i++) {
+      stars.add(
+        Icon(
+          i <= rating ? Icons.star : Icons.star_border,
+          color: i <= rating ? Colors.amber : Colors.grey,
+        ),
+      );
+    }
+    return Row(children: stars);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:book/services/helper_services.dart';
 import 'package:book/services/router_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +42,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [Provider<RouterServices>(create: (_) => RouterServices())],
+      providers: [
+        Provider<RouterServices>(create: (_) => RouterServices()),
+        ChangeNotifierProvider(create: (_) => HelperServices())
+      ],
       child: Consumer<RouterServices>(builder: (context, value, _) {
         return ToastificationWrapper(
           child: MaterialApp.router(

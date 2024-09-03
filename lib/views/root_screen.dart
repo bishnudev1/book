@@ -1,6 +1,8 @@
+import 'package:book/services/helper_services.dart';
 import 'package:book/views/home/home_screen.dart';
 import 'package:book/views/more/more_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -10,8 +12,6 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  int _currentIndex = 0; // Index to keep track of the selected tab
-
   // List of pages to display
   final List<Widget> _pages = [
     HomePageScreen(), // Home page
@@ -20,32 +20,32 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_currentIndex], // Display the selected page
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex, // The current selected index
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index; // Update the selected index
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.search,
-              color: Colors.black,
+    return Consumer<HelperServices>(builder: (context, value, _) {
+      return Scaffold(
+        body: _pages[value.currentIndex], // Display the selected page
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: value.currentIndex, // The current selected index
+          onTap: (index) {
+            value.changeCurrentIndex(value: index);
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.black,
+              ),
+              label: 'Home',
             ),
-            label: 'Services',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.more_horiz,
-              color: Colors.black,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+                color: Colors.black,
+              ),
+              label: 'Settings',
             ),
-            label: 'More',
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
