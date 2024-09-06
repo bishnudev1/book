@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:book/services/auth_services.dart';
 import 'package:book/services/helper_services.dart';
 import 'package:book/services/router_services.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ Future<void> main() async {
     log('${record.level.name}: ${record.time}: ${record.message}');
   });
 
+  AuthServices _authServices = AuthServices();
+
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
   String appName = packageInfo.appName;
@@ -34,30 +37,33 @@ Future<void> main() async {
     statusBarColor: Colors.transparent,
   ));
 
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      Provider<RouterServices>(create: (_) => RouterServices()),
+      ChangeNotifierProvider(create: (_) => HelperServices()),
+      ChangeNotifierProvider<AuthServices>(create: (_) => AuthServices()),
+    ],
+    child: MyApp(
+      authServices: _authServices,
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AuthServices authServices;
+  const MyApp({super.key, required this.authServices});
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<RouterServices>(create: (_) => RouterServices()),
-        ChangeNotifierProvider(create: (_) => HelperServices())
-      ],
-      child: Consumer<RouterServices>(builder: (context, value, _) {
-        return ToastificationWrapper(
-          child: MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            routerConfig: value.goRouter,
-          ),
-        );
-      }),
+    final router = RouterServices().getRouter(context);
+    return ToastificationWrapper(
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        routerConfig: router,
+      ),
     );
   }
 }

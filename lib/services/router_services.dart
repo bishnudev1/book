@@ -1,57 +1,94 @@
-import 'package:book/views/auth/login.dart';
-import 'package:book/views/auth/register.dart';
-import 'package:book/views/home/home_screen.dart';
-import 'package:book/views/root_screen.dart';
-import 'package:book/views/splash/splash_screen.dart';
+import 'package:book/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user.dart';
+import '../views/auth/login.dart';
+import '../views/auth/register.dart';
+import '../views/home/home_screen.dart';
+import '../views/root_screen.dart';
+import '../views/sitter/sitter_screen.dart';
+import '../views/splash/splash_screen.dart';
 
 class RouterServices {
-  final GoRouter _goRouter = GoRouter(
-    initialLocation: '/splash',
-    routes: [
-      GoRoute(
-        path: '/splash',
-        name: 'splash',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const SplashScreen(),
-        ),
-      ),
-      GoRoute(
-        path: '/register',
-        name: 'register',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const RegisterScreen(),
-        ),
-      ),
-      GoRoute(
-        path: '/login',
-        name: 'login',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const LoginScreen(),
-        ),
-      ),
-      GoRoute(
-        path: '/home',
-        name: 'home',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const HomePageScreen(),
-        ),
-      ),
-      GoRoute(
-        path: '/root',
-        name: 'root',
-        pageBuilder: (context, state) => MaterialPage(
-          key: state.pageKey,
-          child: const RootScreen(),
-        ),
-      ),
-    ],
-  );
+  GoRouter _goRouter(AuthServices authServices) => GoRouter(
+        initialLocation: '/splash',
+        // redirect: (context, state) {
+        //   final isAuthenticated = authServices.isAuth;
 
-  GoRouter get goRouter => _goRouter;
+        //   final isGoingToLogin = state.path == '/login';
+        //   final isGoingToRegister = state.path == '/register';
+
+        //   if (!isAuthenticated && !isGoingToLogin && !isGoingToRegister) {
+        //     // If not authenticated, redirect to login page for protected routes.
+        //     return '/login';
+        //   } else if (isAuthenticated && (isGoingToLogin || isGoingToRegister)) {
+        //     // If authenticated and trying to access login/register, redirect to home.
+        //     return '/root';
+        //   }
+
+        //   return null;
+        // },
+        routes: [
+          GoRoute(
+            path: '/splash',
+            name: 'splash',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const SplashScreen(),
+            ),
+          ),
+          GoRoute(
+            path: '/register',
+            name: 'register',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const RegisterScreen(),
+            ),
+          ),
+          GoRoute(
+            path: '/login',
+            name: 'login',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const LoginScreen(),
+            ),
+          ),
+          GoRoute(
+            path: '/home',
+            name: 'home',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const HomePageScreen(),
+            ),
+          ),
+          GoRoute(
+            path: '/root',
+            name: 'root',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const RootScreen(),
+            ),
+          ),
+          GoRoute(
+            path: '/sitter',
+            name: 'sitter',
+            pageBuilder: (context, state) {
+              final Sitter sitter = state.extra as Sitter;
+              return MaterialPage(
+                key: state.pageKey,
+                child: SitterScreen(
+                  sitter: sitter,
+                ),
+              );
+            },
+          ),
+        ],
+      );
+
+  GoRouter getRouter(BuildContext context) {
+    final authServices = Provider.of<AuthServices>(context, listen: false);
+    return _goRouter(authServices);
+  }
 }

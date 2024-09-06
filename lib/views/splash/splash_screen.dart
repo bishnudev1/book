@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:book/utils/asset_manager.dart';
+import 'package:book/views/root_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../home/home_screen.dart';
 
@@ -40,7 +42,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       //       builder: (context) => HomePageScreen(),
       //     ));
       log("Navigating to /root");
-      context.go("/root");
+      // context.go("/root");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RootScreen(),
+          ));
     });
   }
 
@@ -55,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,9 +73,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             //   height: 120,
             // ),
             // SizedBox(height: 10),
-            const Text(
+            Text(
               'Cihu',
-              style: TextStyle(
+              style: GoogleFonts.arbutusSlab(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),

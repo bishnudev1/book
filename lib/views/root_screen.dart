@@ -2,7 +2,10 @@ import 'package:book/services/helper_services.dart';
 import 'package:book/views/home/home_screen.dart';
 import 'package:book/views/more/more_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/exit_app.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -21,29 +24,42 @@ class _RootScreenState extends State<RootScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<HelperServices>(builder: (context, value, _) {
-      return Scaffold(
-        body: _pages[value.currentIndex], // Display the selected page
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: value.currentIndex, // The current selected index
-          onTap: (index) {
-            value.changeCurrentIndex(value: index);
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.black,
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) {
+            return;
+          }
+          if (value.currentIndex == 0) {
+            onback(context);
+          }
+
+          value.changeCurrentIndex(value: 0);
+        },
+        child: Scaffold(
+          body: _pages[value.currentIndex], // Display the selected page
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: value.currentIndex, // The current selected index
+            onTap: (index) {
+              value.changeCurrentIndex(value: index);
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                ),
+                label: 'Home',
               ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-                color: Colors.black,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.black,
+                ),
+                label: 'Settings',
               ),
-              label: 'Settings',
-            ),
-          ],
+            ],
+          ),
         ),
       );
     });

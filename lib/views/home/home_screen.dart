@@ -1,8 +1,12 @@
 import 'package:book/utils/asset_manager.dart';
+import 'package:book/views/sitter/sitter_screen.dart';
+import 'package:book/views/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/user.dart';
+import '../../widgets/exit_app.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -14,52 +18,68 @@ class HomePageScreen extends StatefulWidget {
 class _HomePageScreenState extends State<HomePageScreen> {
   TextEditingController searchFieldController = TextEditingController();
 
-  List<User> userList = [
-    User(
+  List<Sitter> userList = [
+    Sitter(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       userName: 'Deepak Kumar',
       destination: '5 miles away',
+      info:
+          "Experienced pet sitter who loves animals. I have taken care of dogs, cats, and small pets for over 5 years. I can also provide basic training and grooming.",
       ratingStars: 4,
       services: [
-        Icons.car_rental_rounded,
-        Icons.sports_gymnastics_rounded,
+        Services(serviceIcon: Icons.car_rental_rounded, serviceText: 'Car'),
+        Services(serviceIcon: Icons.sports_gymnastics_rounded, serviceText: 'Gym'),
       ],
       userPrice: '\$12 per Hour',
     ),
-    User(
+    Sitter(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       userName: 'Deepak Kumar',
       destination: '5 miles away',
+      info:
+          "Friendly and reliable pet sitter. I am flexible with timing and can take care of pets overnight. I can handle pets of all sizes and temperaments.",
       ratingStars: 3,
-      services: [Icons.car_rental_rounded, Icons.sports_gymnastics_rounded, Icons.cookie_outlined],
+      services: [
+        Services(serviceIcon: Icons.car_rental_rounded, serviceText: 'Car'),
+        Services(serviceIcon: Icons.sports_gymnastics_rounded, serviceText: 'Gym'),
+        Services(serviceIcon: Icons.cookie_outlined, serviceText: 'Cooking'),
+      ],
       userPrice: '\$12 per Hour',
     ),
-    User(
+    Sitter(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       userName: 'Deepak Kumar',
+      info:
+          "Professional pet sitter with a focus on the well-being of your pets. I provide daily walks, feeding, and playtime, ensuring your pets are happy and healthy.",
       destination: '5 miles away',
       ratingStars: 5,
-      services: [Icons.luggage_rounded],
+      services: [
+        Services(serviceIcon: Icons.luggage_rounded, serviceText: 'Luggage'),
+      ],
       userPrice: '\$12 per Hour',
     ),
-    User(
+    Sitter(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       userName: 'Deepak Kumar',
+      info:
+          "Passionate pet sitter available for last-minute bookings. I offer a calm and safe environment for your pets while you're away.",
       destination: '5 miles away',
       ratingStars: 4,
-      services: [Icons.sports_gymnastics_rounded],
+      services: [
+        Services(serviceIcon: Icons.sports_gymnastics_rounded, serviceText: 'Gym'),
+      ],
       userPrice: '\$12 per Hour',
     ),
     // Additional users...
   ];
 
   // List of all available services
-  final List<IconData> allServices = [
-    Icons.car_rental_rounded,
-    Icons.sports_gymnastics_rounded,
-    Icons.cookie_outlined,
-    Icons.luggage_rounded,
-    // Add other service icons here...
+  List<Services> allServicesList = [
+    Services(serviceIcon: Icons.car_rental_rounded, serviceText: 'Car'),
+    Services(serviceIcon: Icons.sports_gymnastics_rounded, serviceText: 'Gym'),
+    Services(serviceIcon: Icons.cookie_outlined, serviceText: 'Cooking'),
+    Services(serviceIcon: Icons.luggage_rounded, serviceText: 'Luggage'),
+    // Add other services here...
   ];
 
   @override
@@ -91,7 +111,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
               // Heading Text
               Text(
-                'Book a Ride',
+                'Book a Sitter',
                 style: GoogleFonts.montserrat(
                   fontSize: deviceWidth * 0.08,
                   fontWeight: FontWeight.bold,
@@ -128,7 +148,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.blueAccent,
+                      color: AssetManager.baseTextColor11,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
@@ -150,87 +170,96 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.only(bottom: deviceHeight * 0.02),
-                      padding: EdgeInsets.all(deviceWidth * 0.04),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 2,
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              ClipOval(
-                                child: Image.asset(
-                                  // userList[index].profilePhoto,
-                                  AssetManager.dummyPersonDP,
-                                  height: deviceHeight * 0.15,
-                                  width: deviceHeight * 0.15, // Circular image
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              SizedBox(width: deviceWidth * 0.04),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    userList[index].userName,
-                                    style: GoogleFonts.roboto(
-                                      fontSize: deviceWidth * 0.045,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
+                    return GestureDetector(
+                      onTap: () {
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) => SitterScreen(sitter: userList[index])));
+                        context.push("/sitter", extra: userList[index]);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: deviceHeight * 0.02),
+                        padding: EdgeInsets.all(deviceWidth * 0.04),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                ClipOval(
+                                  child: Image.asset(
+                                    // userList[index].profilePhoto,
+                                    AssetManager.dummyPersonDP,
+                                    height: deviceHeight * 0.15,
+                                    width: deviceHeight * 0.15, // Circular image
+                                    fit: BoxFit.cover,
                                   ),
-                                  SizedBox(height: deviceHeight * 0.005),
-                                  _buildStarRating(userList[index].ratingStars),
-                                ],
+                                ),
+                                SizedBox(width: deviceWidth * 0.04),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      userList[index].userName,
+                                      style: GoogleFonts.roboto(
+                                        fontSize: deviceWidth * 0.045,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    SizedBox(height: deviceHeight * 0.005),
+                                    _buildStarRating(userList[index].ratingStars),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: deviceHeight * 0.015),
+
+                            // Services Logos
+                            Wrap(
+                              spacing: 8,
+                              children: allServicesList.map((service) {
+                                if (userList[index]
+                                    .services
+                                    .any((s) => s.serviceIcon == service.serviceIcon)) {
+                                  return _buildServiceTag(service);
+                                } else {
+                                  return _buildExcludedServiceTag(service);
+                                }
+                              }).toList(),
+                            ),
+
+                            SizedBox(height: deviceHeight * 0.015),
+
+                            // Additional information
+                            Text(
+                              "A short description or additional information about the user or the services they provide.",
+                              style: GoogleFonts.lato(
+                                fontSize: deviceWidth * 0.035,
+                                color: Colors.black54,
                               ),
-                            ],
-                          ),
-                          SizedBox(height: deviceHeight * 0.015),
-
-                          // Services Logos
-                          Wrap(
-                            spacing: 8,
-                            children: allServices.map((service) {
-                              if (userList[index].services.contains(service)) {
-                                return _buildServiceTag(service);
-                              } else {
-                                return _buildExcludedServiceTag(service);
-                              }
-                            }).toList(),
-                          ),
-
-                          SizedBox(height: deviceHeight * 0.015),
-
-                          // Additional information
-                          Text(
-                            "A short description or additional information about the user or the services they provide.",
-                            style: GoogleFonts.lato(
-                              fontSize: deviceWidth * 0.035,
-                              color: Colors.black54,
                             ),
-                          ),
-                          SizedBox(height: deviceHeight * 0.015),
-                          Text(
-                            userList[index].userPrice,
-                            style: GoogleFonts.poppins(
-                              color: Colors.green,
-                              fontSize: deviceWidth * 0.04,
-                              fontWeight: FontWeight.bold,
+                            SizedBox(height: deviceHeight * 0.015),
+                            Text(
+                              userList[index].userPrice,
+                              style: GoogleFonts.poppins(
+                                color: Colors.green,
+                                fontSize: deviceWidth * 0.04,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -243,30 +272,56 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget _buildServiceTag(IconData serviceIcon) {
-    return Icon(
-      serviceIcon,
-      color: Colors.blueAccent,
-      size: 28,
+  Widget _buildServiceTag(Services service) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          service.serviceIcon,
+          color: Colors.blueAccent,
+          size: 28,
+        ),
+        // SizedBox(height: 4),
+        // Text(
+        //   service.serviceText ?? '',
+        //   style: GoogleFonts.openSans(
+        //     fontSize: 12,
+        //     color: Colors.black87,
+        //   ),
+        // ),
+      ],
     );
   }
 
-  Widget _buildExcludedServiceTag(IconData serviceIcon) {
-    return Stack(
-      alignment: Alignment.center,
+  Widget _buildExcludedServiceTag(Services service) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          serviceIcon,
-          color: Colors.grey,
-          size: 28,
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Icon(
+              service.serviceIcon,
+              color: Colors.grey,
+              size: 28,
+            ),
+            Positioned(
+              child: Icon(
+                Icons.clear,
+                color: Colors.redAccent,
+                size: 18,
+              ),
+            ),
+          ],
         ),
-        Positioned(
-          child: Icon(
-            Icons.clear,
-            color: Colors.redAccent,
-            size: 18,
-          ),
-        ),
+        // SizedBox(height: 4),
+        // Text(
+        //   service.serviceText ?? '',
+        //   style: GoogleFonts.openSans(
+        //     fontSize: 12,
+        //     color: Colors.grey,
+        //   ),
+        // ),
       ],
     );
   }
