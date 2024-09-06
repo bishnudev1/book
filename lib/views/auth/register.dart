@@ -41,6 +41,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: GestureDetector(
+              onTap: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context);
+                } else {
+                  onback(context);
+                }
+              },
+              child: Icon(Icons.arrow_back_ios)),
+        ),
         backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),

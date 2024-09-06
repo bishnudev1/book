@@ -35,8 +35,8 @@ onback(BuildContext context) async {
     context: context,
     builder: ((context) {
       return AlertDialog(
-        title: const Text('Are you sure you want to exit the app ?',
-            style: TextStyle(
+        title: Text('Are you sure you want to exit the app ?',
+            style: GoogleFonts.lato(
               fontSize: 15,
             )),
         actions: [
