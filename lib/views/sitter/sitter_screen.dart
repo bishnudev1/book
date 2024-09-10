@@ -1,11 +1,9 @@
 import 'package:book/models/user.dart';
-import 'package:book/views/home/home_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../widgets/exit_app.dart';
 
 class SitterScreen extends StatefulWidget {
   final Sitter sitter;
@@ -32,7 +30,7 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
           onTap: () {
             context.pop();
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back_ios,
             color: Colors.blueGrey,
           ),
@@ -44,10 +42,10 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
             fontSize: 17,
           ),
         ),
-        actions: [
+        actions: const [
           Icon(
             Icons.share_outlined,
-            color: const Color.fromARGB(255, 39, 39, 39),
+            color: Color.fromARGB(255, 39, 39, 39),
           ),
           SizedBox(
             width: 10,
@@ -55,7 +53,7 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
         ],
       ),
       body: widget.sitter.userName == ""
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : SingleChildScrollView(
@@ -67,8 +65,8 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                     children: [
                       CachedNetworkImage(
                         imageUrl: widget.sitter.profilePhoto,
-                        placeholder: (context, url) => CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                         height: 300,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -88,7 +86,7 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                       ),
                     ],
                   ),
-                  SizedBox(height: 60), // Adjust this value as needed
+                  const SizedBox(height: 60), // Adjust this value as needed
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0),
                     child: Column(
@@ -101,14 +99,14 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         _buildStarRating(widget.sitter.ratingStars),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           "Destination: ${widget.sitter.destination}",
                           style: GoogleFonts.abel(fontSize: 16),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "Price: ${widget.sitter.userPrice}",
                           style: GoogleFonts.abel(fontSize: 16),
@@ -116,13 +114,13 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TabBar(
                     controller: _tabController,
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.grey,
                     indicatorColor: Colors.blue,
-                    tabs: [
+                    tabs: const [
                       Tab(text: "Info"),
                       Tab(text: "Services"),
                       Tab(text: "Reviews"),
@@ -135,7 +133,7 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                       children: [
                         _buildInfoSection(widget.sitter.info),
                         _buildServicesSection(widget.sitter.services),
-                        Center(child: Text("No reviews yet")),
+                        const Center(child: Text("No reviews yet")),
                       ],
                     ),
                   ),
@@ -202,7 +200,7 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
             child: Row(
               children: [
                 Icon(data.serviceIcon, size: 24, color: Colors.blueGrey),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(
                   data.serviceText.toString(),
                   style: GoogleFonts.abel(fontSize: 16),

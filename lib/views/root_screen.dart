@@ -2,7 +2,6 @@ import 'package:book/services/helper_services.dart';
 import 'package:book/views/home/home_screen.dart';
 import 'package:book/views/more/more_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/exit_app.dart';
@@ -17,8 +16,8 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   // List of pages to display
   final List<Widget> _pages = [
-    HomePageScreen(), // Home page
-    MoreScreen(), // Settings page, replace with actual settings page
+    const HomePageScreen(), // Home page
+    const MoreScreen(), // Settings page, replace with actual settings page
   ];
 
   @override

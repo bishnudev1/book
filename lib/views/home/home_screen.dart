@@ -1,12 +1,9 @@
 import 'package:book/utils/asset_manager.dart';
-import 'package:book/views/sitter/sitter_screen.dart';
-import 'package:book/views/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/user.dart';
-import '../../widgets/exit_app.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -305,7 +302,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               color: Colors.grey,
               size: 28,
             ),
-            Positioned(
+            const Positioned(
               child: Icon(
                 Icons.clear,
                 color: Colors.redAccent,

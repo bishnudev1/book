@@ -20,11 +20,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool showPassword = true;
 
   final _formKey = GlobalKey<FormState>(); // Key for the Form
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _zipCodeController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _zipCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onback(context);
                 }
               },
-              child: Icon(Icons.arrow_back_ios)),
+              child: const Icon(Icons.arrow_back_ios)),
         ),
         backgroundColor: Colors.white,
         body: Padding(
@@ -137,7 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           },
                           icon:
-                              showPassword ? Icon(Icons.remove_red_eye_outlined) : Icon(Icons.remove_red_eye),
+                              showPassword ? const Icon(Icons.remove_red_eye_outlined) : const Icon(Icons.remove_red_eye),
                         ),
                         labelText: 'Password',
                         labelStyle: TextStyle(color: Colors.grey[600]),
@@ -189,7 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onTap: () {
                         // Navigate to the LoginScreen
                         // context.go('/login');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

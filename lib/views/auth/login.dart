@@ -1,13 +1,9 @@
-import 'dart:developer';
 
 import 'package:book/services/auth_services.dart';
 import 'package:book/services/helper_services.dart';
 import 'package:book/utils/asset_manager.dart';
-import 'package:book/utils/pop_manager.dart';
 import 'package:book/views/auth/register.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool rememberMe = false;
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  final GlobalKey _key = GlobalKey<FormState>();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onback(context);
                 }
               },
-              child: Icon(Icons.arrow_back_ios)),
+              child: const Icon(Icons.arrow_back_ios)),
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 40, right: 25, left: 25, bottom: 20),
@@ -82,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: GoogleFonts.abel(
                         fontWeight: FontWeight.bold, fontSize: 32, color: AssetManager.baseTextColor11),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Text(
@@ -90,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: GoogleFonts.abel(
                         fontWeight: FontWeight.bold, fontSize: 17, color: AssetManager.baseTextColor11),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   // Email Field
@@ -102,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextFormField(
                       validator: (value) {
                         value!.isEmpty ? true : null;
+                        return null;
                       },
                       decoration: InputDecoration(
                           prefixIcon: Icon(
@@ -126,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: showPassword,
                       validator: (value) {
                         value!.isEmpty ? true : null;
+                        return null;
                       },
                       decoration: InputDecoration(
                           prefixIcon: Icon(
@@ -139,8 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               },
                               icon: showPassword
-                                  ? Icon(Icons.remove_red_eye_outlined)
-                                  : Icon(Icons.remove_red_eye)),
+                                  ? const Icon(Icons.remove_red_eye_outlined)
+                                  : const Icon(Icons.remove_red_eye)),
                           labelText: 'Password',
                           labelStyle: TextStyle(color: Colors.grey[600]),
                           border: InputBorder.none),
@@ -189,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (resp == true) {
                             Provider.of<HelperServices>(context, listen: false).changeCurrentIndex(value: 0);
                             // context.go('/root');
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const RootScreen()));
                           }
                         },
                         child: Padding(
@@ -215,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () {
                         // Navigate to the RegisterScreen
                         // context.go('/register');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,5 @@
 import 'package:book/services/auth_services.dart';
+import 'package:book/views/sitter/sitter_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,14 @@ class RouterServices {
             pageBuilder: (context, state) => MaterialPage(
               key: state.pageKey,
               child: const SplashScreen(),
+            ),
+          ),
+          GoRoute(
+            path: '/sregister',
+            name: 'sregister',
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: const SitterRegisterScreen(),
             ),
           ),
           GoRoute(

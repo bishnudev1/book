@@ -10,6 +10,7 @@ class AssetManager {
   static const splashImage = '$baseImagePath/splashScreen.png';
   static const dummyPersonDP = '$baseImagePath/person.jpeg';
   static const loginBG = '$baseImagePath/login.jpg';
+  static const sitterRegisterBG = '$baseImagePath/sitter_register_bg.png';
 
   // Normal Height & Width
 

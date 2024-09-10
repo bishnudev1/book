@@ -10,6 +10,6 @@ class HelperServices with ChangeNotifier {
   void changeCurrentIndex({required int value}) {
     _currentIndex = value;
     notifyListeners();
-    log("_currentIndex: ${_currentIndex}");
+    log("_currentIndex: $_currentIndex");
   }
 }

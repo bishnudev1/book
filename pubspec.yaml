@@ -45,6 +45,7 @@ dependencies:
   dio:
   go_router: ^14.2.7
   provider: 
+  url_launcher: ^6.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

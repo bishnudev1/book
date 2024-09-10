@@ -2,17 +2,16 @@ import 'dart:developer';
 
 import 'package:book/services/auth_services.dart';
 import 'package:book/services/helper_services.dart';
+import 'package:book/utils/ph_dialer.dart';
 import 'package:book/views/auth/login.dart';
 import 'package:book/views/auth/register.dart';
+import 'package:book/views/sitter/sitter_register_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../../widgets/exit_app.dart';
-
 class MoreScreen extends StatefulWidget {
-  MoreScreen({super.key});
+  const MoreScreen({super.key});
 
   @override
   State<MoreScreen> createState() => _MoreScreenState();
@@ -76,7 +75,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 12),
 
                 // Account Section
                 value.isAuth
@@ -102,7 +101,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 //     // TODO: Implement navigation or action
                 //   },
                 // ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Divider(height: 1, color: Colors.grey[200]),
@@ -114,9 +113,14 @@ class _MoreScreenState extends State<MoreScreen> {
                   text: 'Sitter Register',
                   onTap: () {
                     // TODO: Implement navigation or action
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SitterRegisterScreen(),
+                      ),
+                    );
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Divider(height: 1, color: Colors.grey[200]),
@@ -137,7 +141,7 @@ class _MoreScreenState extends State<MoreScreen> {
                           );
                         })
                     : Container(),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Divider(height: 1, color: Colors.grey[200]),
@@ -180,7 +184,7 @@ class _MoreScreenState extends State<MoreScreen> {
                         },
                       )
                     : Container(),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Divider(height: 1, color: Colors.grey[200]),
@@ -210,16 +214,17 @@ class _MoreScreenState extends State<MoreScreen> {
                 const SizedBox(height: 12),
 
                 // Help Center Section
-                _buildSettingsRow(
-                  icon: Icons.help_center_outlined,
-                  text: 'Help Center',
-                  onTap: () {
-                    // TODO: Implement navigation or action
-                  },
-                ),
-                SizedBox(
+                // _buildSettingsRow(
+                //   icon: Icons.help_center_outlined,
+                //   text: 'Help Center',
+                //   onTap: () {
+                //     // TODO: Implement navigation or action
+                //   },
+                // ),
+                const SizedBox(
                   height: 12,
                 ),
+
                 Divider(height: 1, color: Colors.grey[200]),
                 const SizedBox(height: 12),
 
@@ -229,6 +234,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   text: 'Emergency Hotline',
                   onTap: () {
                     // TODO: Implement navigation or action
+                    launchPhoneDialer("9876543210");
                   },
                 ),
                 const SizedBox(height: 32),
@@ -243,6 +249,11 @@ class _MoreScreenState extends State<MoreScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
+                const SizedBox(
+                  height: 12,
+                ),
+                Divider(height: 1, color: Colors.grey[200]),
+                const SizedBox(height: 12),
 
                 // Report a Bug Section
                 _buildSettingsRow(
@@ -252,7 +263,7 @@ class _MoreScreenState extends State<MoreScreen> {
                     // TODO: Implement navigation or action
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Divider(height: 1, color: Colors.grey[200]),
@@ -279,7 +290,7 @@ class _MoreScreenState extends State<MoreScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

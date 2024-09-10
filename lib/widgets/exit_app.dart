@@ -17,11 +17,11 @@ Future<bool> showExitConfirmationDialog(BuildContext context) async {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Exit'),
+              child: const Text('Exit'),
             ),
           ],
         ),

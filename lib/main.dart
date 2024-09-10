@@ -23,7 +23,7 @@ Future<void> main() async {
     log('${record.level.name}: ${record.time}: ${record.message}');
   });
 
-  AuthServices _authServices = AuthServices();
+  AuthServices authServices = AuthServices();
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
@@ -44,7 +44,7 @@ Future<void> main() async {
       ChangeNotifierProvider<AuthServices>(create: (_) => AuthServices()),
     ],
     child: MyApp(
-      authServices: _authServices,
+      authServices: authServices,
     ),
   ));
 }

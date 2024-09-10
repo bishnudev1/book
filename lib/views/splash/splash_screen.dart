@@ -1,12 +1,9 @@
 import 'dart:developer';
 
-import 'package:book/utils/asset_manager.dart';
 import 'package:book/views/root_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -35,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     // Start the animation
     // _controller.forward();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       // Navigator.push(
       //     context,
       //     MaterialPageRoute(
@@ -46,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RootScreen(),
+            builder: (context) => const RootScreen(),
           ));
     });
   }
