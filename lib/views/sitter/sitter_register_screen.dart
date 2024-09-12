@@ -23,7 +23,9 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _zipCodeController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController(); // New description controller
+  final TextEditingController _descriptionController = TextEditingController(); // Description controller
+  final TextEditingController _perHourChargeController =
+      TextEditingController(); // Per Hour Charge controller
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +139,14 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
                 ),
                 const SizedBox(height: 20),
 
+                // Per Hour Charge Field (added here)
+                buildTextField(
+                    label: 'Per Hour Charge',
+                    icon: Icons.money_outlined,
+                    keyboardType: TextInputType.number,
+                    controller: _perHourChargeController),
+                const SizedBox(height: 16),
+
                 // Description Field
                 Container(
                   decoration: BoxDecoration(
@@ -178,6 +188,7 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
                             _zipCodeController.text.isNotEmpty &&
                             _emailController.text.isNotEmpty &&
                             _passwordController.text.isNotEmpty &&
+                            _perHourChargeController.text.isNotEmpty && // Include Per Hour Charge validation
                             _descriptionController.text.isNotEmpty) {
                           Navigator.push(
                             context,
@@ -188,14 +199,13 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
                                 'zipCode': _zipCodeController.text,
                                 'email': _emailController.text,
                                 'password': _passwordController.text,
+                                'perHourCharge': _perHourChargeController.text, // Pass Per Hour Charge
                                 'description': _descriptionController.text
                               }),
                             ),
                           );
                         } else {
-                          showToast(
-                              message: "Please fill out all fields and select at least one service",
-                              type: ToastificationType.error);
+                          showToast(message: "Please fill out all fields", type: ToastificationType.error);
                         }
                       }
                     },
@@ -228,7 +238,7 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
     required IconData icon,
     required TextEditingController controller,
     TextInputType keyboardType = TextInputType.text,
-    bool isUpperCase = false, // New parameter for uppercase transformation
+    bool isUpperCase = false,
   }) {
     return Container(
       decoration: BoxDecoration(

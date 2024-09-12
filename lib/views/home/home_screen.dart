@@ -15,6 +15,7 @@ class HomePageScreen extends StatefulWidget {
 class _HomePageScreenState extends State<HomePageScreen> {
   TextEditingController searchFieldController = TextEditingController();
 
+// List of Sitters with improved structure
   List<Sitter> userList = [
     Sitter(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
@@ -24,58 +25,92 @@ class _HomePageScreenState extends State<HomePageScreen> {
           "Experienced pet sitter who loves animals. I have taken care of dogs, cats, and small pets for over 5 years. I can also provide basic training and grooming.",
       ratingStars: 4,
       services: [
-        Services(serviceIcon: Icons.car_rental_rounded, serviceText: 'Car'),
-        Services(serviceIcon: Icons.sports_gymnastics_rounded, serviceText: 'Gym'),
+        Services(
+            serviceIcon: Icons.car_rental_rounded,
+            serviceText: 'Car',
+            serviceDescription: 'Emergency transportation.'),
+        Services(
+            serviceIcon: Icons.sports_gymnastics_rounded,
+            serviceText: 'Gym',
+            serviceDescription: 'Fitness and training for pets.'),
       ],
       userPrice: '\$12 per Hour',
     ),
     Sitter(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
-      userName: 'Deepak Kumar',
-      destination: '5 miles away',
+      userName: 'Anjali Verma',
+      destination: '3 miles away',
       info:
-          "Friendly and reliable pet sitter. I am flexible with timing and can take care of pets overnight. I can handle pets of all sizes and temperaments.",
+          "Friendly and reliable pet sitter. Flexible with timing and can take care of pets overnight. I can handle pets of all sizes and temperaments.",
       ratingStars: 3,
       services: [
-        Services(serviceIcon: Icons.car_rental_rounded, serviceText: 'Car'),
-        Services(serviceIcon: Icons.sports_gymnastics_rounded, serviceText: 'Gym'),
-        Services(serviceIcon: Icons.cookie_outlined, serviceText: 'Cooking'),
+        Services(
+            serviceIcon: Icons.car_rental_rounded,
+            serviceText: 'Car',
+            serviceDescription: 'Pet transportation.'),
+        Services(
+            serviceIcon: Icons.sports_gymnastics_rounded,
+            serviceText: 'Gym',
+            serviceDescription: 'Pet exercise and training.'),
+        Services(
+            serviceIcon: Icons.cookie_outlined,
+            serviceText: 'Cooking',
+            serviceDescription: 'Pet-friendly meals prepared.'),
       ],
-      userPrice: '\$12 per Hour',
+      userPrice: '\$14 per Hour',
     ),
     Sitter(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
-      userName: 'Deepak Kumar',
+      userName: 'Rohan Sharma',
+      destination: '2 miles away',
       info:
-          "Professional pet sitter with a focus on the well-being of your pets. I provide daily walks, feeding, and playtime, ensuring your pets are happy and healthy.",
-      destination: '5 miles away',
+          "Professional pet sitter providing daily walks, feeding, and playtime, ensuring your pets are happy and healthy.",
       ratingStars: 5,
       services: [
-        Services(serviceIcon: Icons.luggage_rounded, serviceText: 'Luggage'),
+        Services(
+            serviceIcon: Icons.luggage_rounded,
+            serviceText: 'Luggage',
+            serviceDescription: 'Travel assistance for your pet.'),
       ],
-      userPrice: '\$12 per Hour',
+      userPrice: '\$16 per Hour',
     ),
     Sitter(
       profilePhoto: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
-      userName: 'Deepak Kumar',
+      userName: 'Priya Singh',
+      destination: '4 miles away',
       info:
           "Passionate pet sitter available for last-minute bookings. I offer a calm and safe environment for your pets while you're away.",
-      destination: '5 miles away',
       ratingStars: 4,
       services: [
-        Services(serviceIcon: Icons.sports_gymnastics_rounded, serviceText: 'Gym'),
+        Services(
+            serviceIcon: Icons.sports_gymnastics_rounded,
+            serviceText: 'Gym',
+            serviceDescription: 'Exercise sessions for your pet.'),
       ],
-      userPrice: '\$12 per Hour',
+      userPrice: '\$13 per Hour',
     ),
     // Additional users...
   ];
 
   // List of all available services
+// List of all available services
   List<Services> allServicesList = [
-    Services(serviceIcon: Icons.car_rental_rounded, serviceText: 'Car'),
-    Services(serviceIcon: Icons.sports_gymnastics_rounded, serviceText: 'Gym'),
-    Services(serviceIcon: Icons.cookie_outlined, serviceText: 'Cooking'),
-    Services(serviceIcon: Icons.luggage_rounded, serviceText: 'Luggage'),
+    Services(
+        serviceIcon: Icons.car_rental_rounded,
+        serviceText: 'Car',
+        serviceDescription: 'Emergency transportation for needs.'),
+    Services(
+        serviceIcon: Icons.sports_gymnastics_rounded,
+        serviceText: 'Gym',
+        serviceDescription: 'Pet fitness and training.'),
+    Services(
+        serviceIcon: Icons.cookie_outlined,
+        serviceText: 'Cooking',
+        serviceDescription: 'Pet-friendly meals and snacks.'),
+    Services(
+        serviceIcon: Icons.luggage_rounded,
+        serviceText: 'Luggage',
+        serviceDescription: 'Pet travel assistance and luggage.'),
     // Add other services here...
   ];
 

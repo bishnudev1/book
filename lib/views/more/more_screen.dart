@@ -5,10 +5,13 @@ import 'package:book/services/helper_services.dart';
 import 'package:book/utils/ph_dialer.dart';
 import 'package:book/views/auth/login.dart';
 import 'package:book/views/auth/register.dart';
+import 'package:book/views/policy/terms_cond_screen.dart';
 import 'package:book/views/sitter/sitter_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import '../policy/policy_screen.dart';
 
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});
@@ -261,6 +264,8 @@ class _MoreScreenState extends State<MoreScreen> {
                   text: 'Privacy Policy',
                   onTap: () {
                     // TODO: Implement navigation or action
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()));
                   },
                 ),
                 const SizedBox(
@@ -275,6 +280,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   text: 'Terms and Condition',
                   onTap: () {
                     // TODO: Implement navigation or action
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const TermsCondScreen()));
                   },
                 ),
               ],

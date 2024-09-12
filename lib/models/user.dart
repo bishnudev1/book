@@ -22,12 +22,14 @@ class Sitter {
 
 class Services {
   final IconData serviceIcon;
-  final String serviceText;
+  final String? serviceText;
+  final String? serviceDescription;
   bool isSelected;
 
   Services({
     required this.serviceIcon,
     required this.serviceText,
-    this.isSelected = false, // Default to false if not selected
+    required this.serviceDescription,
+    this.isSelected = false,
   });
 }
