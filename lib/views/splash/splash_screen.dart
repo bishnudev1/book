@@ -1,9 +1,10 @@
-import 'dart:developer';
-
-import 'package:book/views/root_screen.dart';
+import 'package:book/services/appstore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import '../../services/auth_services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,33 +20,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    // Initialize the animation controller
-    // _controller = AnimationController(
-    //   duration: const Duration(seconds: 2),
-    //   vsync: this,
-    // );
-
-    // Create a tween animation from 0.0 (transparent) to 1.0 (opaque)
-    // _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-    //   CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-    // );
-
-    // Start the animation
-    // _controller.forward();
-    Future.delayed(const Duration(seconds: 3), () {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => HomePageScreen(),
-      //     ));
-      log("Navigating to /root");
-      // context.go("/root");
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const RootScreen(),
-          ));
-    });
+    Future.microtask(() => {
+          Future.delayed(const Duration(seconds: 3), () {
+            Provider.of<Appstore>(context, listen: false).checkAuth(context);
+          })
+        });
   }
 
   @override

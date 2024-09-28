@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:book/services/appstore.dart';
 import 'package:book/services/auth_services.dart';
 import 'package:book/services/helper_services.dart';
 import 'package:book/utils/ph_dialer.dart';
@@ -43,7 +44,7 @@ class _MoreScreenState extends State<MoreScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 64.0),
-          child: Consumer<AuthServices>(builder: (context, value, _) {
+          child: Consumer<Appstore>(builder: (context, app, _) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -81,7 +82,7 @@ class _MoreScreenState extends State<MoreScreen> {
                 const SizedBox(height: 12),
 
                 // Account Section
-                value.isAuth
+                app.isSignedIn
                     ? _buildSettingsRow(
                         icon: Icons.person_outline,
                         text: 'Account',
@@ -89,95 +90,86 @@ class _MoreScreenState extends State<MoreScreen> {
                           // TODO: Implement navigation or action
                         },
                       )
-                    : Container(),
-                // SizedBox(
-                //   height: 12,
-                // ),
-                // Divider(height: 1, color: Colors.grey[200]),
-                // const SizedBox(height: 12),
+                    : Container(), // If not signed in, hide this row
 
-                // // Notifications Section
-                // _buildSettingsRow(
-                //   icon: Icons.notifications_active_outlined,
-                //   text: 'Notifications',
-                //   onTap: () {
-                //     // TODO: Implement navigation or action
-                //   },
-                // ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Divider(height: 1, color: Colors.grey[200]),
-                const SizedBox(height: 12),
+                app.isSignedIn ? SizedBox(height: 12) : Container(), // Spacing after the row
 
-                // Corporate Section
-                _buildSettingsRow(
-                  icon: Icons.person_pin_circle_outlined,
-                  text: 'Sitter Register',
-                  onTap: () {
-                    // TODO: Implement navigation or action
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SitterRegisterScreen(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Divider(height: 1, color: Colors.grey[200]),
-                const SizedBox(height: 12),
+                app.isSignedIn
+                    ? Divider(height: 1, color: Colors.grey[200])
+                    : Container(), // If signed in, hide the divider
 
-                //Register Section
+// Conditionally show the divider only if the user is not signed in
+                !app.isSignedIn
+                    ? Divider(height: 1, color: Colors.grey[200])
+                    : Container(), // If signed in, hide the divider
 
-                !value.isAuth
+                const SizedBox(height: 12), // Spacing after the row
+
+// Conditionally show Sitter Register for unsigned users
+                // !app.isSignedIn
+                //     ? _buildSettingsRow(
+                //         icon: Icons.person_pin_circle_outlined,
+                //         text: 'Sitter Register',
+                //         onTap: () {
+                //           Navigator.of(context).push(
+                //             MaterialPageRoute(
+                //               builder: (context) => const SitterRegisterScreen(),
+                //             ),
+                //           );
+                //         },
+                //       )
+                //     : Container(), // If signed in, hide this row
+
+// // Conditionally show divider for not signed-in users
+//                 !app.isSignedIn
+//                     ? Divider(height: 1, color: Colors.grey[200])
+//                     : Container(), // If signed in, hide the divider
+
+//                 app.isSignedIn ? Container() : const SizedBox(height: 12), // Spacing after the row
+
+// Conditionally show Login option for unsigned users
+                !app.isSignedIn
                     ? _buildSettingsRow(
                         icon: Icons.login_outlined,
                         text: "Login",
                         onTap: () {
-                          // context.go("/login");
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const LoginScreen(),
                             ),
                           );
                         })
-                    : Container(),
-                const SizedBox(
-                  height: 12,
-                ),
-                Divider(height: 1, color: Colors.grey[200]),
-                const SizedBox(height: 12),
-                // Register Section
-                !value.isAuth
+                    : Container(), // If signed in, hide the row
+
+// Conditionally show divider for not signed-in users
+                !app.isSignedIn
+                    ? Divider(height: 1, color: Colors.grey[200])
+                    : Container(), // If signed in, hide the divider
+
+                app.isSignedIn ? Container() : const SizedBox(height: 12), // Spacing after the row
+
+// Conditionally show Register option for unsigned users
+                !app.isSignedIn
                     ? _buildSettingsRow(
                         icon: Icons.app_registration_outlined,
                         text: "Register",
                         onTap: () {
-                          // context.go("/register");
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const RegisterScreen(),
                             ),
                           );
                         })
-                    : Container(),
-                // SizedBox(
-                //   height: 12,
-                // ),
-                // Divider(height: 1, color: Colors.grey[200]),
-                // const SizedBox(height: 12),
-                // Logout Section
-                value.isAuth
+                    : Container(), // If signed in, hide the row
+
+// Logout option for signed-in users
+                app.isSignedIn
                     ? _buildSettingsRow(
                         icon: Icons.logout,
                         text: 'Logout',
                         onTap: () async {
-                          // TODO: Implement logout action
-                          bool? resp = await value.logout();
+                          bool? resp = await app.signOut();
                           if (resp == true) {
-                            // context.go("/login");
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => const LoginScreen(),
@@ -186,15 +178,17 @@ class _MoreScreenState extends State<MoreScreen> {
                           }
                         },
                       )
-                    : Container(),
-                const SizedBox(
-                  height: 12,
-                ),
-                Divider(height: 1, color: Colors.grey[200]),
+                    : Container(), // If not signed in, hide the row
+                SizedBox(height: 12),
+// Divider before the Delete Account section
+                app.isSignedIn
+                    ? Divider(height: 1, color: Colors.grey[200])
+                    : Container(), // If not signed in, hide the divider
+
                 const SizedBox(height: 12),
 
-                // Delete Account Section
-                value.isAuth
+// Delete Account for signed-in users
+                app.isSignedIn
                     ? _buildSettingsRow(
                         icon: Icons.delete_outline,
                         text: 'Delete Account',
@@ -202,7 +196,8 @@ class _MoreScreenState extends State<MoreScreen> {
                           // TODO: Implement delete account action
                         },
                       )
-                    : Container(),
+                    : Container(), // If not signed in, hide the row
+
                 const SizedBox(height: 32),
 
                 // Support Section Header

@@ -1,9 +1,10 @@
+import 'package:book/services/sitter_services.dart';
 import 'package:book/utils/asset_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
-import '../../models/user.dart';
 import '../../widgets/exit_app.dart';
 import '../../widgets/show_toast.dart';
 import 'confirm_sitter_register.dart';
@@ -174,55 +175,58 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
                 const SizedBox(height: 28),
 
                 // Next Button
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AssetManager.baseTextColor11, // Button background color
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        if (_firstNameController.text.isNotEmpty &&
-                            _lastNameController.text.isNotEmpty &&
-                            _zipCodeController.text.isNotEmpty &&
-                            _emailController.text.isNotEmpty &&
-                            _passwordController.text.isNotEmpty &&
-                            _perHourChargeController.text.isNotEmpty && // Include Per Hour Charge validation
-                            _descriptionController.text.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ConfirmSitterRegister(sitter: {
-                                'firstName': _firstNameController.text,
-                                'lastName': _lastNameController.text,
-                                'zipCode': _zipCodeController.text,
-                                'email': _emailController.text,
-                                'password': _passwordController.text,
-                                'perHourCharge': _perHourChargeController.text, // Pass Per Hour Charge
-                                'description': _descriptionController.text
-                              }),
-                            ),
-                          );
-                        } else {
-                          showToast(message: "Please fill out all fields", type: ToastificationType.error);
+                Consumer<SitterServices>(builder: (context, value, _) {
+                  return Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AssetManager.baseTextColor11, // Button background color
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          if (_firstNameController.text.isNotEmpty &&
+                              _lastNameController.text.isNotEmpty &&
+                              _zipCodeController.text.isNotEmpty &&
+                              _emailController.text.isNotEmpty &&
+                              _passwordController.text.isNotEmpty &&
+                              _perHourChargeController
+                                  .text.isNotEmpty && // Include Per Hour Charge validation
+                              _descriptionController.text.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ConfirmSitterRegister(sitter: {
+                                  'firstName': _firstNameController.text,
+                                  'lastName': _lastNameController.text,
+                                  'zipCode': _zipCodeController.text,
+                                  'email': _emailController.text,
+                                  'password': _passwordController.text,
+                                  'perHourCharge': _perHourChargeController.text, // Pass Per Hour Charge
+                                  'description': _descriptionController.text
+                                }),
+                              ),
+                            );
+                          } else {
+                            showToast(message: "Please fill out all fields", type: ToastificationType.error);
+                          }
                         }
-                      }
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                        child: Text(
-                          'Next',
-                          style: GoogleFonts.lato(
-                            color: Colors.white, // Button text color
-                            fontSize: 16,
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Center(
+                          child: Text(
+                            'Next',
+                            style: GoogleFonts.lato(
+                              color: Colors.white, // Button text color
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                }),
                 const SizedBox(height: 20),
               ],
             ),

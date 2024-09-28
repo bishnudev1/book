@@ -1,9 +1,10 @@
+import 'package:book/models/sitter.dart';
 import 'package:book/models/user.dart';
+import 'package:book/utils/asset_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class SitterScreen extends StatefulWidget {
   final Sitter sitter;
@@ -37,7 +38,7 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
         ),
         centerTitle: true,
         title: Text(
-          widget.sitter.userName,
+          widget.sitter.first_name ?? "",
           style: GoogleFonts.lato(
             fontSize: 17,
           ),
@@ -52,7 +53,7 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
           )
         ],
       ),
-      body: widget.sitter.userName == ""
+      body: widget.sitter.first_name == ""
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -63,10 +64,16 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      CachedNetworkImage(
-                        imageUrl: widget.sitter.profilePhoto,
-                        placeholder: (context, url) => const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      // CachedNetworkImage(
+                      //   imageUrl:  "",
+                      //   placeholder: (context, url) => const CircularProgressIndicator(),
+                      //   errorWidget: (context, url, error) => const Icon(Icons.error),
+                      //   height: 300,
+                      //   width: double.infinity,
+                      //   fit: BoxFit.cover,
+                      // ),
+                      Image.asset(
+                        AssetManager.dummyPersonDP,
                         height: 300,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -80,7 +87,8 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                               border: Border.all(width: 1, color: Colors.white)),
                           child: CircleAvatar(
                             radius: 45,
-                            backgroundImage: CachedNetworkImageProvider(widget.sitter.profilePhoto),
+                            // backgroundImage: CachedNetworkImageProvider(widget.sitter.profilePhoto ?? ""),
+                            backgroundImage: const AssetImage(AssetManager.dummyPersonDP),
                           ),
                         ),
                       ),
@@ -93,22 +101,22 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.sitter.userName,
+                          widget.sitter.first_name ?? "",
                           style: GoogleFonts.lato(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 8),
-                        _buildStarRating(widget.sitter.ratingStars),
+                        _buildStarRating(int.parse(widget.sitter.rating ?? "0") ?? 0),
                         const SizedBox(height: 8),
                         Text(
-                          "Destination: ${widget.sitter.destination}",
+                          "Description: ${widget.sitter.description}",
                           style: GoogleFonts.abel(fontSize: 16),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Price: ${widget.sitter.userPrice}",
+                          "Price: ${widget.sitter.per_hour_rate} per hour",
                           style: GoogleFonts.abel(fontSize: 16),
                         ),
                       ],
@@ -131,8 +139,8 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        _buildInfoSection(widget.sitter.info),
-                        _buildServicesSection(widget.sitter.services),
+                        _buildInfoSection(widget.sitter.description ?? ""),
+                        _buildServicesSection(widget.sitter.services ?? []),
                         const Center(child: Text("No reviews yet")),
                       ],
                     ),
@@ -199,10 +207,14 @@ class _SitterScreenState extends State<SitterScreen> with SingleTickerProviderSt
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Row(
               children: [
-                Icon(data.serviceIcon, size: 24, color: Colors.blueGrey),
+                // Icon(data.serviceIcon, size: 24, color: Colors.blueGrey),
+                CachedNetworkImage(
+                    imageUrl: "https://chihu.infyedgesolutions.com/${data.service_logo}" ?? "",
+                    height: 24,
+                    width: 24),
                 const SizedBox(width: 10),
                 Text(
-                  data.serviceText.toString(),
+                  data.service_name.toString(),
                   style: GoogleFonts.abel(fontSize: 16),
                 ),
               ],

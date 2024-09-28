@@ -1,4 +1,6 @@
+import 'package:book/models/sitter.dart';
 import 'package:book/services/auth_services.dart';
+import 'package:book/views/sitter/dashboard.dart';
 import 'package:book/views/sitter/sitter_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -67,10 +69,12 @@ class RouterServices {
           GoRoute(
             path: '/home',
             name: 'home',
-            pageBuilder: (context, state) => MaterialPage(
-              key: state.pageKey,
-              child: const HomePageScreen(),
-            ),
+            pageBuilder: (context, state) {
+              return MaterialPage(
+                key: state.pageKey,
+                child: HomePageScreen(),
+              );
+            },
           ),
           GoRoute(
             path: '/root',
@@ -84,12 +88,25 @@ class RouterServices {
             path: '/sitter',
             name: 'sitter',
             pageBuilder: (context, state) {
-              final Sitter sitter = state.extra as Sitter;
+              final Sitter user = state.extra as Sitter;
               return MaterialPage(
                 key: state.pageKey,
                 child: SitterScreen(
-                  sitter: sitter,
+                  sitter: user,
                 ),
+              );
+            },
+          ),
+          GoRoute(
+            path: '/dashboard',
+            name: 'dashboard',
+            pageBuilder: (context, state) {
+              // final Sitter user = state.extra as Sitter;
+              return MaterialPage(
+                key: state.pageKey,
+                child: SitterDashboard(
+                    // sitter: user,
+                    ),
               );
             },
           ),

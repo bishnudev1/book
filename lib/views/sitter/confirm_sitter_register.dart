@@ -1,12 +1,15 @@
+import 'package:book/models/sitter.dart';
 import 'package:book/services/helper_services.dart';
+import 'package:book/services/sitter_services.dart';
 import 'package:book/utils/asset_manager.dart';
+import 'package:book/utils/pop_manager.dart';
 import 'package:book/views/root_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
-import '../../models/user.dart';
-import '../../widgets/exit_app.dart';
 import '../../widgets/show_toast.dart';
 
 class ConfirmSitterRegister extends StatefulWidget {
@@ -19,24 +22,40 @@ class ConfirmSitterRegister extends StatefulWidget {
 }
 
 class _ConfirmSitterRegisterState extends State<ConfirmSitterRegister> {
-  List<Services> allServicesList = [
-    Services(
-        serviceIcon: Icons.car_rental_rounded,
-        serviceText: 'Car',
-        serviceDescription: 'In case of emergency.'),
-    Services(
-        serviceIcon: Icons.sports_gymnastics_rounded,
-        serviceText: 'Gym',
-        serviceDescription: 'Fitness and training assistance.'),
-    Services(
-        serviceIcon: Icons.cookie_outlined,
-        serviceText: 'Cooking',
-        serviceDescription: 'Emergency transportation for needs'),
-    Services(
-        serviceIcon: Icons.luggage_rounded,
-        serviceText: 'Luggage',
-        serviceDescription: 'Travel assistance and luggage.'),
-  ];
+  List<int> selectedServiceIds = []; // Maintain selected service IDs
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => {
+          // Future.delayed(const Duration(seconds: 3), () {
+          Provider.of<SitterServices>(context, listen: false).getAllSitterServices()
+          // })
+        });
+  }
+
+  Widget _buildServiceTag(Services service) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.network(
+          "https://chihu.infyedgesolutions.com/${service.service_logo}",
+          height: 40,
+          width: 40,
+          fit: BoxFit.cover,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          service.service_name ?? '',
+          style: GoogleFonts.lato(
+            fontSize: 14,
+            color: AssetManager.baseTextColor11,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +67,7 @@ class _ConfirmSitterRegisterState extends State<ConfirmSitterRegister> {
             if (Navigator.canPop(context)) {
               Navigator.pop(context);
             } else {
-              onback(context);
+              // Handle app exit
             }
           },
           child: const Icon(Icons.arrow_back_ios),
@@ -57,7 +76,7 @@ class _ConfirmSitterRegisterState extends State<ConfirmSitterRegister> {
           'Select Services',
           style: GoogleFonts.abel(
             fontWeight: FontWeight.bold,
-            fontSize: 20, // Increased font size for the text
+            fontSize: 20,
             color: AssetManager.baseTextColor11,
           ),
         ),
@@ -65,114 +84,130 @@ class _ConfirmSitterRegisterState extends State<ConfirmSitterRegister> {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-
-            // Service Tiles (no label)
-            ...allServicesList.map((service) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    service.isSelected = !service.isSelected;
-                  });
-                },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: service.isSelected ? Colors.grey.shade300 : Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Service Title with GoogleFonts
-                      Row(
-                        children: [
-                          Icon(service.serviceIcon, size: 30, color: AssetManager.baseTextColor11),
-                          const SizedBox(width: 16),
-                          Text(
-                            service.serviceText ?? "",
-                            style: GoogleFonts.lato(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20, // Increased font size for the title
-                              color: AssetManager.baseTextColor11,
-                            ),
+        child: Consumer<SitterServices>(
+          builder: (context, value, _) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                Wrap(
+                  spacing: 16,
+                  children: value.servicesList.map((service) {
+                    if (value.servicesList.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          "No services available",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Service Description below the title
-                      Text(
-                        service.serviceDescription ?? "",
-                        style: GoogleFonts.lato(
-                          fontSize: 14,
-                          color: AssetManager.baseTextColor11,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-
-            const SizedBox(height: 20),
-
-            // Sign Up Button
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AssetManager.baseTextColor11,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Consumer<HelperServices>(builder: (context, value, _) {
-                return InkWell(
-                  onTap: () {
-                    bool isAnyServiceSelected = allServicesList.any((service) => service.isSelected);
-
-                    if (isAnyServiceSelected) {
-                      // Proceed with Sign Up
-                      value.changeCurrentIndex(value: 0);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RootScreen(),
-                        ),
-                      );
-                    } else {
-                      showToast(
-                        message: "Please select at least one service",
-                        type: ToastificationType.error,
                       );
                     }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Center(
-                      child: Text(
-                        'Sign Up',
-                        style: GoogleFonts.lato(
-                          color: Colors.white,
-                          fontSize: 16,
+                    if (value.isLoading) {
+                      return const Center(
+                        child: SizedBox(height: 20, width: 20, child: CircularProgressIndicator()),
+                      );
+                    }
+                    bool isSelected = selectedServiceIds.contains(service.id); // Check if service is selected
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (isSelected) {
+                            selectedServiceIds.remove(service.id); // Deselect service
+                          } else {
+                            selectedServiceIds.add(service.id ?? 0); // Select service
+                          }
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: isSelected ? Colors.grey.shade300 : Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 3,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
                         ),
+                        child: _buildServiceTag(service),
                       ),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AssetManager.baseTextColor11,
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                  ),
-                );
-              }),
-            ),
-          ],
+                    child: InkWell(
+                      onTap: () async {
+                        if (selectedServiceIds.isNotEmpty) {
+                          // Check if any service is selected
+                          // Proceed with Sign Up
+                          final resp = await value.sitter_register(
+                            firstName: widget.sitter['firstName'],
+                            lastName: widget.sitter['lastName'],
+                            email: widget.sitter['email'],
+                            password: widget.sitter['password'],
+                            zip_code: widget.sitter['zipCode'],
+                            description: widget.sitter['description'],
+                            per_hourse_rate: widget.sitter['perHourCharge'],
+                            coma_sep_service_id: selectedServiceIds.join(','),
+                          );
+
+                          if (resp == true) {
+                            showToast(
+                              message: "Sitter registered successfully",
+                              type: ToastificationType.success,
+                            );
+                            context.go('/dashboard');
+                          } else {
+                            showToast(
+                              message: resp.toString(),
+                              type: ToastificationType.error,
+                            );
+                          }
+                        } else {
+                          showToast(
+                            message: "Please select at least one service",
+                            type: ToastificationType.error,
+                          );
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: value.isLoading
+                            ? Center(
+                                child: SizedBox(
+                                  height: 10,
+                                  width: 10,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            : Center(
+                                child: Text(
+                                  'Sign Up',
+                                  style: GoogleFonts.lato(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    )),
+              ],
+            );
+          },
         ),
       ),
     );

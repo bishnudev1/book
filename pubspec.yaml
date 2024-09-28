@@ -39,6 +39,8 @@ dependencies:
   package_info_plus: ^8.0.2
   internet_connection_checker: ^2.0.0
   flutter_dotenv:
+  hive:
+  hive_flutter:  
   toastification: ^2.1.0
   logging: ^1.2.0
   cached_network_image: ^3.4.1
@@ -46,10 +48,13 @@ dependencies:
   go_router: ^14.2.7
   provider: 
   url_launcher: ^6.3.0
+  path_provider: ^2.1.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
   change_app_package_name: 
+  build_runner: 
+  hive_generator: 
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

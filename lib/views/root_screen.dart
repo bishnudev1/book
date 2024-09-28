@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:book/services/helper_services.dart';
+import 'package:book/services/sitter_services.dart';
 import 'package:book/views/home/home_screen.dart';
 import 'package:book/views/more/more_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../services/appstore.dart';
 import '../widgets/exit_app.dart';
 
 class RootScreen extends StatefulWidget {
@@ -19,6 +23,19 @@ class _RootScreenState extends State<RootScreen> {
     const HomePageScreen(), // Home page
     const MoreScreen(), // Settings page, replace with actual settings page
   ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final appStore = Provider.of<Appstore>(context, listen: false);
+      appStore.initializeUserData();
+      final userZipCode = appStore.user?.zipCode ?? '';
+      log("User Zip Code: $userZipCode");
+      Provider.of<SitterServices>(context, listen: false).getSitterListByPinCode(
+        pinCode: userZipCode,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

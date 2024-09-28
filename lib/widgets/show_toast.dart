@@ -9,7 +9,7 @@ void showToast({required String message, required ToastificationType type}) {
     title: Text(message),
     alignment: Alignment.bottomCenter,
     direction: TextDirection.ltr,
-    showIcon: true, // show or hide the icon
+    // showIcon: true, // show or hide the icon
     primaryColor: Colors.white,
     backgroundColor: Colors.black45,
     foregroundColor: Colors.white,
