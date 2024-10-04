@@ -11,7 +11,9 @@ import '../services/appstore.dart';
 import '../widgets/exit_app.dart';
 
 class RootScreen extends StatefulWidget {
-  const RootScreen({super.key});
+  const RootScreen({
+    super.key,
+  });
 
   @override
   State<RootScreen> createState() => _RootScreenState();
@@ -23,18 +25,25 @@ class _RootScreenState extends State<RootScreen> {
     const HomePageScreen(), // Home page
     const MoreScreen(), // Settings page, replace with actual settings page
   ];
+
+  init() async {
+    final Appstore appstore = Provider.of<Appstore>(context, listen: false);
+    await appstore.initializeUserData();
+
+    final userPinCode = appstore.user?.zipCode;
+
+    if (userPinCode == null || userPinCode.isEmpty) {
+      await appstore.initializeUserData();
+    }
+
+    await Provider.of<SitterServices>(context, listen: false)
+        .getSitterListByPinCode(pinCode: appstore.user!.zipCode ?? '');
+  }
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final appStore = Provider.of<Appstore>(context, listen: false);
-      appStore.initializeUserData();
-      final userZipCode = appStore.user?.zipCode ?? '';
-      log("User Zip Code: $userZipCode");
-      Provider.of<SitterServices>(context, listen: false).getSitterListByPinCode(
-        pinCode: userZipCode,
-      );
-    });
+    Future.microtask(() => init());
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
+import '../../services/auth_services.dart';
 import '../../widgets/exit_app.dart';
 import '../../widgets/show_toast.dart';
 import 'confirm_sitter_register.dart';
@@ -27,6 +28,13 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
   final TextEditingController _descriptionController = TextEditingController(); // Description controller
   final TextEditingController _perHourChargeController =
       TextEditingController(); // Per Hour Charge controller
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() => Provider.of<AuthServices>(context, listen: false).getPinCodeList());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,11 +100,14 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
                 const SizedBox(height: 16),
 
                 // Zip Code Field
-                buildTextField(
-                    label: 'Zip Code',
-                    icon: Icons.location_on_outlined,
-                    keyboardType: TextInputType.number,
-                    controller: _zipCodeController),
+                // buildTextField(
+                //     label: 'Zip Code',
+                //     icon: Icons.location_on_outlined,
+                //     keyboardType: TextInputType.number,
+                //     controller: _zipCodeController),
+                Consumer<AuthServices>(builder: (context, value, _) {
+                  return buildZipCodeAutocompleteField(otps: value.pinCodeList);
+                }),
                 const SizedBox(height: 16),
 
                 // Email Field
@@ -269,6 +280,80 @@ class _SitterRegisterScreenState extends State<SitterRegisterScreen> {
           return null;
         },
       ),
+    );
+  }
+
+  Widget buildZipCodeAutocompleteField({required List<String> otps}) {
+    return Autocomplete<String>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text.isEmpty) {
+          return const Iterable<String>.empty();
+        }
+        return otps.where((zip) => zip.contains(textEditingValue.text));
+      },
+      onSelected: (String selection) {
+        _zipCodeController.text = selection;
+      },
+      fieldViewBuilder: (BuildContext context, TextEditingController fieldTextEditingController,
+          FocusNode fieldFocusNode, VoidCallback onFieldSubmitted) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20), // Border radius for the text field
+            color: Colors.grey.shade200,
+          ),
+          child: TextFormField(
+            controller: fieldTextEditingController,
+            focusNode: fieldFocusNode,
+            decoration: InputDecoration(
+              labelText: 'Zip Code',
+              prefixIcon: const Icon(Icons.location_on_outlined),
+              labelStyle: TextStyle(color: Colors.grey[600]),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20), // Apply border radius to the text field
+                borderSide: BorderSide.none, // Remove border side for a clean look
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade200,
+            ),
+          ),
+        );
+      },
+      optionsViewBuilder:
+          (BuildContext context, AutocompleteOnSelected<String> onSelected, Iterable<String> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 50),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(20), // Border radius for the dropdown
+              elevation: 4.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20), // Applying border radius
+                  color: Colors.white,
+                ),
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: options.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    final String option = options.elementAt(index);
+                    return GestureDetector(
+                      onTap: () {
+                        onSelected(option);
+                      },
+                      child: ListTile(
+                        title: Text(option),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

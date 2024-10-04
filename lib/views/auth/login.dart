@@ -321,7 +321,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Do you want to register as a Sitter ?",
+                            "Want to register as a Sitter ?",
                             style: GoogleFonts.lato(
                               color: Colors.grey[600],
                               fontSize: 16,

@@ -97,7 +97,7 @@ class Appstore with ChangeNotifier {
     notifyListeners();
   }
 
-  signOut() async {
+  Future<bool?> signOut() async {
     try {
       if (_isSignedIn && _userBox.isNotEmpty) {
         await _userBox.clear();
@@ -112,8 +112,9 @@ class Appstore with ChangeNotifier {
       }
     } catch (e) {
       log("Error signing out: $e");
-      return "Error signing out: $e";
+      return false;
     }
+    return null;
   }
 
   void checkAuth(BuildContext context) {

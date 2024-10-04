@@ -56,48 +56,56 @@ class _HomePageScreenState extends State<HomePageScreen> {
               SizedBox(height: deviceHeight * 0.03),
               Row(
                 children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      margin: const EdgeInsets.only(right: 14),
+                  Consumer<SitterServices>(builder: (context, app, _) {
+                    return Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        margin: const EdgeInsets.only(right: 14),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: TextFormField(
+                          controller: searchFieldController,
+                          onChanged: (value) {
+                            app.filterSitterListByName(value);
+                          },
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.search, color: Colors.grey),
+                            hintText: 'Search for rides...',
+                            border: InputBorder.none,
+                          ),
+                          style: GoogleFonts.openSans(
+                            fontSize: deviceWidth * 0.04,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                  Consumer<SitterServices>(builder: (context, value, _) {
+                    return Container(
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: AssetManager.baseTextColor11,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: TextFormField(
-                        controller: searchFieldController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.search, color: Colors.grey),
-                          hintText: 'Search for rides...',
-                          border: InputBorder.none,
-                        ),
-                        style: GoogleFonts.openSans(
-                          fontSize: deviceWidth * 0.04,
-                          color: Colors.black,
-                        ),
+                      child: IconButton(
+                        icon: const Icon(Icons.filter_list_alt, color: Colors.white),
+                        onPressed: () {
+                          // TODO: Add filter functionality
+                          value.filterSitterListByName(searchFieldController.text);
+                        },
                       ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AssetManager.baseTextColor11,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.filter_list_alt, color: Colors.white),
-                      onPressed: () {
-                        // TODO: Add filter functionality
-                      },
-                    ),
-                  ),
+                    );
+                  }),
                 ],
               ),
               SizedBox(height: deviceHeight * 0.01),
               Expanded(
                 child: Consumer<SitterServices>(builder: (context, value, _) {
-                  if (value.sitterList.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+                  // if (value.sitterList.isEmpty) {
+                  //   return const Center(child: CircularProgressIndicator());
+                  // }
                   final List<Sitter> userList = value.sitterList;
                   return ListView.builder(
                     itemCount: userList.length,

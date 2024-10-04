@@ -17,6 +17,19 @@ class SitterDashboard extends StatefulWidget {
 
 class _SitterDashboardState extends State<SitterDashboard> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(
+      () {
+        final appstore = Provider.of<Appstore>(context, listen: false);
+        appstore.initializeUserData();
+        appstore.initializeSitterData();
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -38,7 +51,7 @@ class _SitterDashboardState extends State<SitterDashboard> {
                     showToast(message: "Logout successfully", type: ToastificationType.success);
                     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                   } else {
-                    showToast(message: resp.toString(), type: ToastificationType.error);
+                    showToast(message: "Some error occured", type: ToastificationType.error);
                   }
                 },
                 icon: const Icon(Icons.logout),

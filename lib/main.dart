@@ -50,6 +50,7 @@ Future<void> main() async {
 
   log("Currently signed in username: ${appstore.user?.firstName}");
   log("Currently signed in sitter: ${appstore.sitter?.first_name}");
+  log("User pin code: ${appstore.user?.zipCode}");
 
   SitterServices sitterServices = SitterServices();
 

@@ -23,11 +23,24 @@ class SitterServices with ChangeNotifier {
     appstore.initializeSitterData();
   }
 
-  List<Sitter> _sitterList = [];
+  List<Sitter> _sitterList = []; // Filtered list
+  List<Sitter> _originalSitterList = []; // Backup for the original list
   List<Sitter> get sitterList => _sitterList;
 
   List<Services> _servicesList = [];
   List<Services> get servicesList => _servicesList;
+
+  /// Filter sitter list by name
+  filterSitterListByName(String value) {
+    if (value.isEmpty) {
+      _sitterList = List.from(_originalSitterList); // Restore original list
+    } else {
+      _sitterList = _originalSitterList
+          .where((element) => element.first_name!.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
+  }
 
   Future<void> getSitterListByPinCode({required String pinCode}) async {
     try {
@@ -46,16 +59,20 @@ class SitterServices with ChangeNotifier {
         // Deserialize the response to a list of `Sitter` objects
         List sitterData = resp.data['sitter_list'] as List;
         _sitterList = sitterData.map((data) => Sitter.fromJson(data)).toList();
+        _originalSitterList = List.from(_sitterList);
 
         log("Sitter list: $_sitterList");
+        _isLoading = false;
+        notifyListeners(); // Notify listeners that loading has finished
       } else {
         _sitterList = [];
         log("Failed to fetch sitters, response code: ${resp.statusCode}");
+        _isLoading = false;
+        notifyListeners(); // Notify listeners that loading has finished
       }
     } catch (e) {
       log("Error fetching sitters: $e");
       _sitterList = [];
-    } finally {
       _isLoading = false;
       notifyListeners(); // Notify listeners that loading has finished
     }

@@ -13,6 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../policy/policy_screen.dart';
+import '../user/bookings/user_bookings.dart';
+import '../user/profile/profile.dart';
 
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});
@@ -74,7 +76,8 @@ class _MoreScreenState extends State<MoreScreen> {
                 Text(
                   'GENERAL',
                   style: GoogleFonts.rubik(
-                    color: Colors.grey[500], // Light grey text color for "GENERAL"
+                    color: Colors.grey[500],
+                    // Light grey text color for "GENERAL"
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -88,22 +91,52 @@ class _MoreScreenState extends State<MoreScreen> {
                         text: 'Account',
                         onTap: () {
                           // TODO: Implement navigation or action
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AccountScreen(),
+                            ),
+                          );
                         },
                       )
-                    : Container(), // If not signed in, hide this row
+                    : Container(),
+                // If not signed in, hide this row
 
-                app.isSignedIn ? SizedBox(height: 12) : Container(), // Spacing after the row
+                app.isSignedIn ? const SizedBox(height: 12) : Container(),
 
+                app.isSignedIn ? Divider(height: 1, color: Colors.grey[200]) : Container(),
+
+                app.isSignedIn ? const SizedBox(height: 12) : Container(),
                 app.isSignedIn
-                    ? Divider(height: 1, color: Colors.grey[200])
-                    : Container(), // If signed in, hide the divider
+                    ? _buildSettingsRow(
+                        icon: Icons.book_rounded,
+                        text: 'Bookings',
+                        onTap: () async {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const Bookings(),
+                            ),
+                          );
+                          // bool? resp = await app.signOut();
+                          // if (resp == true) {
+                          //   Navigator.of(context).push(
+                          //     MaterialPageRoute(
+                          //       builder: (context) => const LoginScreen(),
+                          //     ),
+                          //   );
+                          // }
+                        },
+                      )
+                    : Container(),
+                app.isSignedIn ? const SizedBox(height: 12) : Container(),
+                app.isSignedIn ? Divider(height: 1, color: Colors.grey[200]) : Container(),
 
 // Conditionally show the divider only if the user is not signed in
-                !app.isSignedIn
-                    ? Divider(height: 1, color: Colors.grey[200])
-                    : Container(), // If signed in, hide the divider
+                !app.isSignedIn ? Divider(height: 1, color: Colors.grey[200]) : Container(),
+                // If signed in, hide the divider
 
-                const SizedBox(height: 12), // Spacing after the row
+                const SizedBox(height: 12),
+                // Spacing after the row
 
 // Conditionally show Sitter Register for unsigned users
                 // !app.isSignedIn
@@ -139,14 +172,15 @@ class _MoreScreenState extends State<MoreScreen> {
                             ),
                           );
                         })
-                    : Container(), // If signed in, hide the row
+                    : Container(),
+                // If signed in, hide the row
 
 // Conditionally show divider for not signed-in users
-                !app.isSignedIn
-                    ? Divider(height: 1, color: Colors.grey[200])
-                    : Container(), // If signed in, hide the divider
+                !app.isSignedIn ? Divider(height: 1, color: Colors.grey[200]) : Container(),
+                // If signed in, hide the divider
 
-                app.isSignedIn ? Container() : const SizedBox(height: 12), // Spacing after the row
+                app.isSignedIn ? Container() : const SizedBox(height: 12),
+                // Spacing after the row
 
 // Conditionally show Register option for unsigned users
                 !app.isSignedIn
@@ -160,7 +194,8 @@ class _MoreScreenState extends State<MoreScreen> {
                             ),
                           );
                         })
-                    : Container(), // If signed in, hide the row
+                    : Container(),
+                // If signed in, hide the row
 
 // Logout option for signed-in users
                 app.isSignedIn
@@ -178,12 +213,12 @@ class _MoreScreenState extends State<MoreScreen> {
                           }
                         },
                       )
-                    : Container(), // If not signed in, hide the row
-                SizedBox(height: 12),
+                    : Container(),
+                // If not signed in, hide the row
+                const SizedBox(height: 12),
 // Divider before the Delete Account section
-                app.isSignedIn
-                    ? Divider(height: 1, color: Colors.grey[200])
-                    : Container(), // If not signed in, hide the divider
+                app.isSignedIn ? Divider(height: 1, color: Colors.grey[200]) : Container(),
+                // If not signed in, hide the divider
 
                 const SizedBox(height: 12),
 
@@ -196,7 +231,8 @@ class _MoreScreenState extends State<MoreScreen> {
                           // TODO: Implement delete account action
                         },
                       )
-                    : Container(), // If not signed in, hide the row
+                    : Container(),
+                // If not signed in, hide the row
 
                 const SizedBox(height: 32),
 
@@ -204,7 +240,8 @@ class _MoreScreenState extends State<MoreScreen> {
                 Text(
                   'SUPPORT',
                   style: GoogleFonts.rubik(
-                    color: Colors.grey[500], // Light grey text color for "GENERAL"
+                    color: Colors.grey[500],
+                    // Light grey text color for "GENERAL"
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -241,7 +278,8 @@ class _MoreScreenState extends State<MoreScreen> {
                 Text(
                   'USEFUL LINKS',
                   style: GoogleFonts.rubik(
-                    color: Colors.grey[500], // Light grey text color for "GENERAL"
+                    color: Colors.grey[500],
+                    // Light grey text color for "GENERAL"
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
