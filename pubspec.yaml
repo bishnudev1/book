@@ -49,9 +49,13 @@ dependencies:
   provider: 
   url_launcher: ^6.3.0
   path_provider: ^2.1.4
+  image_picker: 
+  permission_handler:
+  path:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons:
   change_app_package_name: 
   build_runner: 
   hive_generator: 
@@ -79,6 +83,7 @@ flutter:
     - .env.local
     - assets/
     - assets/login.jpg
+    # - images/logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -106,3 +111,22 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+# flutter_launcher_icons:
+#   android: "launcher_icon"
+#   ios: true
+#   image_path: "images/logo.png"
+#   min_sdk_android: 21 # android min sdk min:16, default 21
+#   web:
+#     generate: false
+#     # image_path: "path/to/image.png"
+#     # background_color: "#hexcode"
+#     # theme_color: "#hexcode"
+#   windows:
+#     generate: false
+#     # image_path: "path/to/image.png"
+#     # icon_size: 48 # min:48, max:256, default: 48
+#   macos:
+#     generate: false
+#     # image_path: "path/to/image.png"

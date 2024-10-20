@@ -23,13 +23,18 @@ class SitterAdapter extends TypeAdapter<Sitter> {
       description: fields[3] as String?,
       services: (fields[4] as List?)?.cast<Services>(),
       per_hour_rate: fields[5] as int?,
+      email: fields[6] as String?,
+      user_type: fields[7] as String?,
+      zip_code: fields[8] as String?,
+      id: fields[9] as int?,
+      profile_pic: fields[10] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Sitter obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.first_name)
       ..writeByte(1)
@@ -41,7 +46,17 @@ class SitterAdapter extends TypeAdapter<Sitter> {
       ..writeByte(4)
       ..write(obj.services)
       ..writeByte(5)
-      ..write(obj.per_hour_rate);
+      ..write(obj.per_hour_rate)
+      ..writeByte(6)
+      ..write(obj.email)
+      ..writeByte(7)
+      ..write(obj.user_type)
+      ..writeByte(8)
+      ..write(obj.zip_code)
+      ..writeByte(9)
+      ..write(obj.id)
+      ..writeByte(10)
+      ..write(obj.profile_pic);
   }
 
   @override

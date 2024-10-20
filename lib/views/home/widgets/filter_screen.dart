@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:book/models/sitter.dart';
+import 'package:book/services/sitter_services.dart';
+import 'package:book/utils/asset_manager.dart';
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
@@ -8,26 +12,31 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  // List of category buttons with selection state
-  final List<String> categories = ['Car', 'Gym', 'Cooking', 'Luggage'];
+  // List of categories available as Services
+  final List<Services> categories = [
+    Services(id: 1, service_name: 'Car'),
+    Services(id: 2, service_name: 'Gym'),
+    Services(id: 3, service_name: 'Cooking'),
+    Services(id: 4, service_name: 'Luggage'),
+  ];
 
-  List<bool> selectedCategories = List.generate(12, (_) => false);
-  double selectedPriceRange = 20;
+  // List to track selected categories
+  List<Services> selectedCategories = [];
+  double selectedPriceRange = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Center(
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Center(
         child: Container(
-          margin: const EdgeInsets.only(left: 16, right: 16),
-          height: MediaQuery.of(context).size.height * 0.35,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -39,9 +48,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: const Icon(
-                        Icons.close_rounded,
-                      ),
+                      child: const Icon(Icons.close_rounded),
                     ),
                   ],
                 ),
@@ -64,22 +71,26 @@ class _FilterScreenState extends State<FilterScreen> {
                   runSpacing: 8,
                   children: List.generate(categories.length, (index) {
                     return ChoiceChip(
-                      label: Text(categories[index]),
-                      selected: selectedCategories[index],
+                      label: Text(categories[index].service_name ?? ''),
+                      selected: selectedCategories.contains(categories[index]),
                       onSelected: (bool selected) {
                         setState(() {
-                          selectedCategories[index] = selected;
+                          if (selected) {
+                            selectedCategories.add(categories[index]);
+                          } else {
+                            selectedCategories.remove(categories[index]);
+                          }
                         });
                       },
-                      selectedColor: Colors.green,
+                      selectedColor: AssetManager.baseTextColor11,
                       backgroundColor: Colors.grey.shade300,
                       labelStyle: TextStyle(
-                        color: selectedCategories[index] ? Colors.white : Colors.black,
+                        color: selectedCategories.contains(categories[index]) ? Colors.white : Colors.black,
                       ),
                     );
                   }),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -88,7 +99,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '\$ $selectedPriceRange',
+                      '\$${selectedPriceRange.toStringAsFixed(2)}',
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -99,7 +110,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   max: 100,
                   divisions: 100,
                   label: '\$${selectedPriceRange.toInt()}',
-                  activeColor: Colors.green,
+                  activeColor: AssetManager.baseTextColor11,
                   inactiveColor: Colors.grey.shade300,
                   onChanged: (double value) {
                     setState(() {
@@ -114,6 +125,31 @@ class _FilterScreenState extends State<FilterScreen> {
                     Text('\$100'),
                   ],
                 ),
+                const SizedBox(height: 16),
+                Consumer<SitterServices>(
+                  builder: (context, sitterServices, _) {
+                    return SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Apply filters
+                          sitterServices.filterSitterListByCategories(
+                            selectedCategories,
+                            selectedPriceRange,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AssetManager.baseTextColor11,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        child: const Text(
+                          'Apply Filters',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -124,7 +160,7 @@ class _FilterScreenState extends State<FilterScreen> {
 
   void _clearSelections() {
     setState(() {
-      selectedCategories = List.generate(categories.length, (_) => false);
+      selectedCategories = [];
       selectedPriceRange = 20;
     });
   }

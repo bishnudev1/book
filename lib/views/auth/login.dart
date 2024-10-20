@@ -5,6 +5,7 @@ import 'package:book/services/helper_services.dart';
 import 'package:book/utils/asset_manager.dart';
 import 'package:book/utils/validation.dart';
 import 'package:book/views/auth/register.dart';
+import 'package:book/views/sitter/dashboard.dart';
 import 'package:book/views/sitter/sitter_register_screen.dart';
 import 'package:book/widgets/show_toast.dart';
 import 'package:flutter/material.dart';
@@ -239,13 +240,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             } else {
                               showToast(message: "Please enter a email", type: ToastificationType.error);
                             }
-                            if (resp == true) {
+                            if (resp == "user") {
                               showToast(message: "Login successfully", type: ToastificationType.success);
                               Provider.of<HelperServices>(context, listen: false)
                                   .changeCurrentIndex(value: 0);
                               // context.go('/root');
                               Navigator.push(
                                   context, MaterialPageRoute(builder: (context) => const RootScreen()));
+                            } else if (resp == "sitter") {
+                              showToast(
+                                  message: "Sitter login successfully", type: ToastificationType.success);
+                              Navigator.push(
+                                  context, MaterialPageRoute(builder: (context) => SitterDashboard()));
                             } else if (resp == null) {
                               return;
                             } else {

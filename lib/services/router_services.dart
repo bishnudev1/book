@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:book/models/sitter.dart';
 import 'package:book/services/auth_services.dart';
 import 'package:book/views/sitter/dashboard.dart';
@@ -89,6 +91,7 @@ class RouterServices {
             name: 'sitter',
             pageBuilder: (context, state) {
               final Sitter user = state.extra as Sitter;
+              log("getting sitter id in router_services: ${user.id}");
               return MaterialPage(
                 key: state.pageKey,
                 child: SitterScreen(

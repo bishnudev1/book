@@ -23,14 +23,33 @@ class Sitter extends HiveObject {
   @HiveField(5)
   int? per_hour_rate;
 
-  Sitter({
-    this.first_name,
-    this.last_name,
-    this.rating,
-    this.description,
-    this.services,
-    this.per_hour_rate,
-  });
+  @HiveField(6)
+  String? email;
+
+  @HiveField(7)
+  String? user_type;
+
+  @HiveField(8)
+  String? zip_code;
+
+  @HiveField(9)
+  int? id;
+
+  @HiveField(10)
+  String? profile_pic;
+
+  Sitter(
+      {this.first_name,
+      this.last_name,
+      this.rating,
+      this.description,
+      this.services,
+      this.per_hour_rate,
+      this.email,
+      this.user_type,
+      this.zip_code,
+      this.id,
+      this.profile_pic});
 
   // Factory method for converting JSON to Sitter object
   factory Sitter.fromJson(Map<String, dynamic> json) {
@@ -39,6 +58,11 @@ class Sitter extends HiveObject {
       last_name: json['last_name'],
       rating: json['rating'] != "" ? json['rating'].toString() : null,
       description: json['description'],
+      email: json['email'],
+      user_type: json['user_type'],
+      id: json["user_id"],
+      zip_code: json['zip_code'],
+      profile_pic: json['profile_pic'],
       // Safely parsing per_hour_rate as int
       per_hour_rate: json['per_hour_rate'] is int
           ? json['per_hour_rate']
@@ -53,8 +77,13 @@ class Sitter extends HiveObject {
       'first_name': first_name,
       'last_name': last_name,
       'rating': rating,
+      'user_type': user_type,
+      'email': email,
+      'user_id': id,
       'description': description,
+      'profile_pic': profile_pic,
       'per_hour_rate': per_hour_rate,
+      'zip_code': zip_code,
       'serviceDet': services?.map((e) => e.toJson()).toList(),
     };
   }

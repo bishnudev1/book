@@ -66,7 +66,7 @@ class Appstore with ChangeNotifier {
 
     // Fetch user data
     _sitter = _sitterBox.get('sitter') ?? Sitter();
-    log("Sitter data initialized: ${_user?.firstName}");
+    log("Sitter data initialized: ${_sitter?.first_name}");
 
     // Determine if user is signed in
     _isSitterSignedIn = _sitter?.first_name != null && _sitter?.last_name != '';
@@ -87,6 +87,7 @@ class Appstore with ChangeNotifier {
   }
 
   Future<void> storeSitterLoggedInUser({required Sitter sitter}) async {
+    log("Into the appstore storeSitterLoggedInUser");
     // If the user exists, delete the existing user
     if (_sitterBox.isNotEmpty) {
       await _sitterBox.clear();
@@ -94,6 +95,7 @@ class Appstore with ChangeNotifier {
     _sitter = sitter;
     await _sitterBox.put('sitter', sitter);
     _isSitterSignedIn = true;
+    log("Sitterbox status: ${_sitterBox.isEmpty}");
     notifyListeners();
   }
 
@@ -127,9 +129,15 @@ class Appstore with ChangeNotifier {
     }
   }
 
-  void setAuth(bool value) {
+  void setUserAuth({required bool value}) {
     _isSignedIn = value;
     notifyListeners();
+  }
+
+  void setSitterAuth({required bool value}) {
+    _isSitterSignedIn = value;
+    notifyListeners();
+    log("setSitterAuth: ${_isSitterSignedIn}");
   }
 
   void checkHive() {

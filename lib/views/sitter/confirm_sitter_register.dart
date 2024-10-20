@@ -3,6 +3,7 @@ import 'package:book/services/helper_services.dart';
 import 'package:book/services/sitter_services.dart';
 import 'package:book/utils/asset_manager.dart';
 import 'package:book/utils/pop_manager.dart';
+import 'package:book/views/auth/login.dart';
 import 'package:book/views/root_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -164,7 +165,7 @@ class _ConfirmSitterRegisterState extends State<ConfirmSitterRegister> {
                             message: "Sitter registered successfully",
                             type: ToastificationType.success,
                           );
-                          context.go('/dashboard');
+                          navigateToLogin();
                         } else {
                           showToast(
                             message: resp.toString(),
@@ -204,5 +205,9 @@ class _ConfirmSitterRegisterState extends State<ConfirmSitterRegister> {
         ),
       ),
     );
+  }
+
+  void navigateToLogin() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 }

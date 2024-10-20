@@ -48,9 +48,12 @@ Future<void> main() async {
   await appstore.initializeUserData();
   await appstore.initializeSitterData();
 
-  log("Currently signed in username: ${appstore.user?.firstName}");
-  log("Currently signed in sitter: ${appstore.sitter?.first_name}");
+  log("Currently signed in username: ${appstore.user?.userId}");
+  log("Currently signed in sitter: ${appstore.sitter?.id}");
   log("User pin code: ${appstore.user?.zipCode}");
+
+  log("Currently signed in image URL: ${appstore.user?.profile_pic}");
+  log("Currently signed in image URL: ${appstore.sitter?.profile_pic}");
 
   SitterServices sitterServices = SitterServices();
 

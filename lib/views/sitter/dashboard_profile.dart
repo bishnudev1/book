@@ -1,3 +1,208 @@
+// import 'package:book/services/appstore.dart';
+// import 'package:book/utils/asset_manager.dart';
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:provider/provider.dart';
+
+// class DashboardProfileScreen extends StatefulWidget {
+//   const DashboardProfileScreen({super.key});
+
+//   @override
+//   State<DashboardProfileScreen> createState() => _DashboardProfileScreenState();
+// }
+
+// class _DashboardProfileScreenState extends State<DashboardProfileScreen> {
+//   bool isPasswordVisible = false;
+
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     Future.microtask(() {
+//       Provider.of<Appstore>(context, listen: false).initializeSitterData();
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         iconTheme: const IconThemeData(color: Colors.black),
+//         centerTitle: true,
+//         title: Text(
+//           'My Profile',
+//           style: GoogleFonts.nunito(
+//             color: Colors.grey[800],
+//             fontWeight: FontWeight.bold,
+//             fontSize: 20,
+//           ),
+//         ),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16),
+//         child: Consumer<Appstore>(builder: (context, value, _) {
+//           return Column(
+//             children: [
+//               /// Profile Image
+//               const Center(
+//                 child: Stack(
+//                   children: [
+//                     CircleAvatar(
+//                       radius: 60,
+//                       backgroundImage: NetworkImage(
+//                         'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
+//                       ),
+//                     ),
+//                     Positioned(
+//                       bottom: 0,
+//                       right: 0,
+//                       child: CircleAvatar(
+//                         radius: 16,
+//                         backgroundColor: AssetManager.baseTextColor11,
+//                         child: Icon(
+//                           Icons.edit,
+//                           size: 16,
+//                           color: Colors.white,
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               const SizedBox(height: 40),
+
+//               /// Full Name Field
+//               _buildTextField('Full Name', value.sitter?.first_name ?? "Enter your name"),
+//               const SizedBox(height: 20),
+//               _buildTextField('E-mail', value.sitter?.email ?? "Enter your email"),
+//               const SizedBox(height: 20),
+//               _buildPasswordField(() {
+//                 isPasswordVisible = !isPasswordVisible;
+//                 setState(() {});
+//               }),
+//               const SizedBox(height: 40),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   _buildButton('SAVE', AssetManager.baseTextColor11, Colors.white),
+//                 ],
+//               ),
+//             ],
+//           );
+//         }),
+//       ),
+//     );
+//   }
+
+//   Widget _buildTextField(String label, String placeholder, {bool isPassword = false}) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         Text(
+//           label,
+//           style: GoogleFonts.nunito(
+//             color: Colors.grey.withOpacity(.8),
+//             fontWeight: FontWeight.bold,
+//             fontSize: 16,
+//           ),
+//         ),
+//         const SizedBox(height: 8),
+//         TextField(
+//           obscureText: isPassword,
+//           decoration: InputDecoration(
+//             hintText: placeholder,
+//             hintStyle: GoogleFonts.nunito(
+//               color: Colors.grey.withOpacity(.8),
+//               fontWeight: FontWeight.bold,
+//               fontSize: 14,
+//             ),
+//             suffixIcon: isPassword ? const Icon(Icons.visibility_off) : null,
+//             border: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(8),
+//               borderSide: BorderSide(
+//                 color: Colors.grey.withOpacity(.8),
+//               ),
+//             ),
+//             enabledBorder: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(8),
+//               borderSide: BorderSide(
+//                 color: Colors.grey.withOpacity(.8),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+
+//   Widget _buildPasswordField(Function() isPassVisible) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         Text(
+//           'Password',
+//           style: GoogleFonts.nunito(
+//             color: Colors.grey.withOpacity(.8),
+//             fontWeight: FontWeight.bold,
+//             fontSize: 16,
+//           ),
+//         ),
+//         SizedBox(height: 8),
+//         TextField(
+//           obscureText: isPasswordVisible,
+//           decoration: InputDecoration(
+//             hintText: '********',
+//             hintStyle: GoogleFonts.nunito(
+//               color: Colors.grey.withOpacity(.8),
+//               fontWeight: FontWeight.bold,
+//               fontSize: 14,
+//             ),
+//             suffixIcon: IconButton(
+//               icon: Icon(
+//                 isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+//               ),
+//               onPressed: isPassVisible,
+//             ),
+//             border: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(8),
+//               borderSide: BorderSide(
+//                 color: Colors.grey.withOpacity(.8),
+//               ),
+//             ),
+//             enabledBorder: OutlineInputBorder(
+//               borderRadius: BorderRadius.circular(8),
+//               borderSide: BorderSide(
+//                 color: Colors.grey.withOpacity(.8),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+
+//   Widget _buildButton(String text, Color backgroundColor, Color textColor) {
+//     return ElevatedButton(
+//       style: ElevatedButton.styleFrom(
+//         foregroundColor: textColor,
+//         backgroundColor: backgroundColor,
+//         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(8),
+//         ),
+//       ),
+//       onPressed: () {},
+//       child: Text(
+//         text,
+//         style: const TextStyle(
+//           fontSize: 16,
+//           fontWeight: FontWeight.bold,
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 import 'dart:developer';
 import 'dart:io';
 
@@ -9,33 +214,32 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../utils/asset_manager.dart';
 
-class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+class DashboardProfileScreen extends StatefulWidget {
+  const DashboardProfileScreen({super.key});
 
   @override
-  State<AccountScreen> createState() => _AccountScreenState();
+  State<DashboardProfileScreen> createState() => _DashboardProfileScreenState();
 }
 
-class _AccountScreenState extends State<AccountScreen> {
+class _DashboardProfileScreenState extends State<DashboardProfileScreen> {
   bool isPasswordVisible = false;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _old_password_Controller = TextEditingController();
+  final TextEditingController _new_password_Controller = TextEditingController();
   final ImagePicker _imagePicker = ImagePicker();
-  final TextEditingController _old_passwordController = TextEditingController();
-  final TextEditingController _new_passwordController = TextEditingController();
   File? _selectedImage;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => {Provider.of<Appstore>(context, listen: false).initializeUserData()});
+    Future.microtask(() => {Provider.of<Appstore>(context, listen: false).initializeSitterData()});
   }
 
   @override
@@ -56,23 +260,23 @@ class _AccountScreenState extends State<AccountScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Consumer<Appstore>(builder: (context, value, _) {
-          _firstNameController.text = value.user?.firstName ?? "";
-          _lastNameController.text = value.user?.lastName ?? "";
-          _emailController.text = value.user?.email ?? "";
+          _firstNameController.text = value.sitter?.first_name ?? "";
+          _lastNameController.text = value.sitter?.last_name ?? "";
+          _emailController.text = value.sitter?.email ?? "";
 
           return ListView(
             children: [
               _buildProfileImageSection(
-                  image: value.user?.profile_pic ??
+                  image: value.sitter?.profile_pic ??
                       "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg",
-                  id: value.user?.userId.toString() ?? ""),
+                  id: value.sitter?.id.toString() ?? ""),
               const SizedBox(height: 24),
               _buildNameAndEmailSection(value),
               const SizedBox(height: 24),
               _buildPasswordSection(
-                  id: value.user?.userId.toString() ?? "",
-                  old: _old_passwordController,
-                  news: _new_passwordController),
+                  id: value.sitter?.id.toString() ?? "",
+                  old: _old_password_Controller,
+                  news: _new_password_Controller),
             ],
           );
         }),
@@ -89,8 +293,12 @@ class _AccountScreenState extends State<AccountScreen> {
               CircleAvatar(
                 radius: 60,
                 backgroundImage: _selectedImage != null
-                    ? FileImage(_selectedImage!)
-                    : CachedNetworkImageProvider(image != ""
+                    ? FileImage(File(_selectedImage!.path))
+                    :
+                    // const NetworkImage(
+                    //     'https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg',
+                    //   ) as ImageProvider
+                    CachedNetworkImageProvider(image != ""
                             ? image
                             : "https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg")
                         as ImageProvider,
@@ -120,8 +328,8 @@ class _AccountScreenState extends State<AccountScreen> {
             onPressed: () async {
               // _selectedImage != null ? _updateProfileImage() : null;
               if (_selectedImage != null) {
-                // _updateProfileImage(file: _selectedImage!, id: id);
-                final resp = await value.updateProfilePicture(image: _selectedImage!, id: id, isUser: true);
+                // updateProfileImage(file: _selectedImage!, id: id);
+                final resp = await value.updateProfilePicture(image: _selectedImage!, id: id, isUser: false);
 
                 if (resp == true) {
                   showToast(
@@ -152,10 +360,10 @@ class _AccountScreenState extends State<AccountScreen> {
   void _pickImage() async {
     // var status = await Permission.storage.request();
     // if (status.isGranted) {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
+    final image = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
       setState(() {
-        _selectedImage = File(pickedFile.path);
+        _selectedImage = File(image.path);
       });
     }
     // } else {
@@ -163,10 +371,10 @@ class _AccountScreenState extends State<AccountScreen> {
     // }
   }
 
-  void _updateProfileImage({required File file, required String id}) async {
+  void updateProfileImage({required File file, required String id}) async {
     log("_updateProfileImage called.");
     final resp =
-        await Provider.of<AuthServices>(context).updateProfilePicture(image: file, id: id, isUser: true);
+        await Provider.of<AuthServices>(context).updateProfilePicture(image: file, id: id, isUser: false);
 
     if (resp == true) {
       showToast(message: "Profile pic has updated successfully", type: ToastificationType.success);
@@ -193,19 +401,20 @@ class _AccountScreenState extends State<AccountScreen> {
         Consumer<AuthServices>(builder: (context, auth, _) {
           return ElevatedButton(
             onPressed: () async {
-              if (_firstNameController.text == value.user?.firstName &&
-                  _lastNameController.text == value.user?.lastName &&
-                  _emailController.text == value.user?.email) {
+              if (_firstNameController.text == value.sitter?.first_name &&
+                  _lastNameController.text == value.sitter?.last_name &&
+                  _emailController.text == value.sitter?.email) {
                 showToast(message: "No fields to update.", type: ToastificationType.success);
                 return;
               }
 
-              final user_id = value.user?.userId;
-              final first_name =
-                  _firstNameController.text.isEmpty ? value.user?.firstName ?? "" : _firstNameController.text;
+              final user_id = value.sitter?.id;
+              final first_name = _firstNameController.text.isEmpty
+                  ? value.sitter?.first_name ?? ""
+                  : _firstNameController.text;
               final last_name =
-                  _lastNameController.text.isEmpty ? value.user?.lastName ?? "" : _lastNameController.text;
-              final email = _emailController.text.isEmpty ? value.user?.email ?? "" : _emailController.text;
+                  _lastNameController.text.isEmpty ? value.sitter?.last_name ?? "" : _lastNameController.text;
+              final email = _emailController.text.isEmpty ? value.sitter?.email ?? "" : _emailController.text;
 
               final resp = await Provider.of<AuthServices>(context, listen: false).updateProfile(
                   id: user_id.toString(),
@@ -213,12 +422,11 @@ class _AccountScreenState extends State<AccountScreen> {
                   last_name: last_name,
                   email: email,
                   context: context,
-                  isUser: true);
+                  isUser: false);
 
               if (resp == true) {
                 showToast(message: "Profile has updated successfully.", type: ToastificationType.success);
                 // await Provider.of<Appstore>(context, listen: false).signOut();
-                // navigateToLogin();
                 navigatePopUp();
               } else {
                 showToast(message: "Something went wrong. Try again later.", type: ToastificationType.error);
@@ -284,7 +492,7 @@ class _AccountScreenState extends State<AccountScreen> {
         last_name: last_name,
         email: email,
         context: context,
-        isUser: true);
+        isUser: false);
 
     if (resp == true) {
       showToast(message: "Profile has updated successfully.", type: ToastificationType.success);
@@ -296,8 +504,11 @@ class _AccountScreenState extends State<AccountScreen> {
     }
   }
 
-  Widget _buildPasswordSection(
-      {required String id, required TextEditingController old, required TextEditingController news}) {
+  Widget _buildPasswordSection({
+    required String id,
+    required TextEditingController old,
+    required TextEditingController news,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -313,29 +524,39 @@ class _AccountScreenState extends State<AccountScreen> {
         _buildPasswordField(() {
           isPasswordVisible = !isPasswordVisible;
           setState(() {});
-        }, "Old password", old),
-        const SizedBox(height: 8),
+        }, old),
+        SizedBox(
+          height: 8,
+        ),
         _buildPasswordField(() {
           isPasswordVisible = !isPasswordVisible;
           setState(() {});
-        }, "New password", news),
+        }, news),
         const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: () {
-            _changePassword(id: id, old_password: old.text, new_password: news.text);
-          },
-          child: const Text('Change Password'),
-        ),
+        Consumer<AuthServices>(builder: (context, value, _) {
+          return ElevatedButton(
+            onPressed: () async {
+              _changePassword(id: id, old_password: old.text, new_password: news.text);
+            },
+            child: value.isLoading
+                ? SizedBox(
+                    height: 15,
+                    width: 15,
+                    child: CircularProgressIndicator(),
+                  )
+                : Text('Change Password'),
+          );
+        }),
       ],
     );
   }
 
-  Widget _buildPasswordField(Function() toggleVisibility, String hinttext, TextEditingController value) {
+  Widget _buildPasswordField(Function() toggleVisibility, TextEditingController value) {
     return TextFormField(
-      obscureText: isPasswordVisible,
       controller: value,
+      obscureText: isPasswordVisible,
       decoration: InputDecoration(
-        hintText: hinttext,
+        hintText: '********',
         hintStyle: GoogleFonts.nunito(
           color: Colors.grey.withOpacity(.8),
           fontWeight: FontWeight.bold,

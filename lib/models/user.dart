@@ -23,16 +23,28 @@ class User extends HiveObject {
   @HiveField(5)
   int? userId;
 
-  User({this.userType, this.firstName, this.lastName, this.zipCode, this.email, this.userId});
+  @HiveField(6)
+  String? profile_pic;
+
+  User(
+      {this.userType,
+      this.firstName,
+      this.lastName,
+      this.zipCode,
+      this.email,
+      this.userId,
+      this.profile_pic});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        userId: json['user_id'],
-        userType: json['user_type'],
-        firstName: json['first_name'],
-        lastName: json['last_name'],
-        zipCode: json['zip_code'],
-        email: json['email']);
+      userId: json['user_id'],
+      userType: json['user_type'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      zipCode: json['zip_code'],
+      email: json['email'],
+      profile_pic: json['profile_pic'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -42,7 +54,8 @@ class User extends HiveObject {
       'first_name': firstName,
       'last_name': lastName,
       'zip_code': zipCode,
-      'email': email
+      'email': email,
+      'profile_pic': profile_pic,
     };
   }
 }

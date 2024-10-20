@@ -1,13 +1,14 @@
-import 'package:book/services/appstore.dart';
+import 'dart:developer';
 import 'package:book/services/sitter_services.dart';
 import 'package:book/utils/asset_manager.dart';
+import 'package:book/views/sitter/sitter_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/sitter.dart';
-import '../../models/user.dart';
+import 'widgets/filter_screen.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -93,7 +94,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         icon: const Icon(Icons.filter_list_alt, color: Colors.white),
                         onPressed: () {
                           // TODO: Add filter functionality
-                          value.filterSitterListByName(searchFieldController.text);
+                          // value.filterSitterListByName(searchFieldController.text);
+                          showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (context) => const FilterScreen(),
+                          );
                         },
                       ),
                     );
@@ -114,7 +120,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          context.push("/sitter", extra: userList[index]);
+                          // context.push("/sitter", extra: userList[index]);
+                          log("sitter_id in home screen: ${userList[index].user_type}");
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => SitterScreen(sitter: userList[index])));
                         },
                         child: Container(
                           margin: EdgeInsets.only(bottom: deviceHeight * 0.02),
@@ -137,11 +146,22 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               Row(
                                 children: [
                                   ClipOval(
-                                    child: Image.asset(
-                                      AssetManager.dummyPersonDP,
+                                    // child:
+                                    //  Image.asset(
+                                    //   AssetManager.dummyPersonDP,
+                                    //   height: deviceHeight * 0.15,
+                                    //   width: deviceHeight * 0.15,
+                                    //   fit: BoxFit.cover,
+                                    // ),
+                                    child: CachedNetworkImage(
                                       height: deviceHeight * 0.15,
                                       width: deviceHeight * 0.15,
                                       fit: BoxFit.cover,
+                                      imageUrl: userList[index].profile_pic != ""
+                                          ? userList[index].profile_pic ?? ""
+                                          : "https://w7.pngwing.com/pngs/910/606/png-transparent-head-the-dummy-avatar-man-tie-jacket-user-thumbnail.png",
+                                      placeholder: (context, url) => const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                     ),
                                   ),
                                   SizedBox(width: deviceWidth * 0.04),
